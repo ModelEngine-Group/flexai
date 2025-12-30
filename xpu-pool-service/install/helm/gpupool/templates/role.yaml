@@ -1,0 +1,35 @@
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Values.devicePluginName }}-role
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    name: {{ .Values.devicePluginName }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes/status
+    verbs:
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - update
+      - patch

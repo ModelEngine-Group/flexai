@@ -1,0 +1,53 @@
+---
+version: 2.0
+
+buildspace:
+  fixed: true
+  path: /usr1/workspace
+
+envs:
+  - condition: env_type == 'docker'
+    resource:
+      type: docker
+      image: ${image_name_x86}
+      resource_class: 16U32G
+      mode: toolbox
+  - condition: env_type == "vpc"
+    resource:
+      type: docker
+      image: ${image_name_x86}
+      pool: ${img_pool_x86}
+      resource_class: 16U32G
+
+buildspace:
+  fixed: true
+  path: /usr1/workspace
+  
+params:
+  - name: product
+    value: cloudbuild2.0
+  - name: CB_AUTO_CHECK_VERSION
+    value: 2.0
+  - name: CB_META_ENABLE_SWBOM
+    value: true
+  - name: CB_META_ENABLE_FILE_SWBOM
+    value: true
+  - name: CB_META_CMC_DEPENDENCY_V2
+    value: true
+
+steps:
+  PRE_BUILD:
+    - checkout:
+        path: ${branch}
+  BUILD:
+    - build_execute:
+        command: |
+          sh ${branch}/ci/buildinfo.sh
+          sh ${branch}/ci/at/at_deploy.sh
+        accelerate: false
+        enhance:
+          - feature: md5_source_tracement
+            build_tools: [maven]
+        check:
+          auto: true
+          mode: sync

@@ -1,0 +1,121 @@
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+
+basic:
+  swr_addr: "docker.io/library"
+  namespace: xpu
+
+gpu:
+  nodeSelector:
+    huawei.com/vgpu: ready
+npu:
+  nodeSelector:
+    huawei.com/vnpu: ready    
+
+gpuDevicePlugin:
+  name: gpu-device-plugin
+  labels:
+    name: gpu-device-plugin
+  image:
+    name: gpu_device_plugin
+    version: "2.0"
+
+npuDevicePlugin:
+  name: npu-device-plugin
+  labels:
+    name: npu-device-plugin
+  image:
+    name: npu_device_plugin
+    version: "2.0"
+  
+gpuClientUpdate:
+  name: gpu-client-update
+  labels:
+    name: gpu-client-update
+  image:
+    name: cuda_client_update
+    version: "2.0"
+
+npuClientUpdate:
+  name: npu-client-update
+  labels:
+    name: npu-client-update
+  image:
+    name: acl_client_update
+    version: "2.0"
+  
+xpuExporter:
+  name: xpu-exporter
+  args:
+    ["--type=gpu", "--logging-console=true"]
+  port: 8082
+  image:
+    name: xpu_exporter
+    version:"2.0"
+  https: '"off"'
+
+imagePullPolicy: IfNotPresent
+updateStrategy:
+  type: RollingUpdate
+priorityClassName: "system-node-critical"
+
+# docker/containerd
+runtimeType: "docker"
+runtimeClassName: nvidia
+
+# centos/rhel/ubuntu/debian
+osType: centos
+cudaPath:
+  centos: /usr/lib64
+  rhel: /usr/lib64
+  ubuntu: /usr/lib/x86_64-linux-gnu
+  debian: /usr/lib/x86_64-linux-gnu
+
+deviceSplitCount: 20
+loggingConsole: true
+
+devicePluginName: device-plugin
+
+flavor:
+  gpu_client_update_daemonset:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "200m"
+      memory: "512Mi"
+  gpu_device_plugin_daemonset:
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  npu_client_update_daemonset:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "200m"
+      memory: "512Mi"
+  npu_device_plugin_daemonset:
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  xpu_exporter_daemonset:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+gpuTypeMap:
+  Tesla P4: P4
+  Tesla T4: T4
+  Tesla V100-PCIE-32GB: V100
+
+ServiceMonitor:
+  enable: false

@@ -1,0 +1,29 @@
+# compiler
+*.o
+*.so
+*.so.*
+*.out
+
+# cmake
+cmake-build-*/
+build/
+*.cmake
+
+# protobuf generated code
+*.pb.cc
+*.pb.h
+
+# IDE
+*.swp
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# bin
+GPU-device-plugin/gpu-device-plugin
+GPU-device-plugin/npu-device-plugin
+GPU-device-plugin/xpu-client-tool
+xpu-exporter/xpu-exporter

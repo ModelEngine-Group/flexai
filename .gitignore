@@ -1,0 +1,10 @@
+# compiler
+*.o
+*.so
+*.so.*
+*.out
+
+#IDE
+*.swp
+.vscode/
+.idea/

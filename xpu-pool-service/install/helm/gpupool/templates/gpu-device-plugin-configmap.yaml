@@ -1,0 +1,12 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.gpuDevicePlugin.name }}-configmap
+  namespace: {{ .Values.basic.namespace }}
+data:
+  gpu-type.conf: |
+    # Copyright Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+    {{ range $key, $value := .Values.gpuTypeMap }}
+    {{ $key }}: {{ $value }}
+    {{ end }}

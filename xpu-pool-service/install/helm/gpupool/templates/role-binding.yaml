@@ -1,0 +1,16 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.devicePluginName }}-role-binding
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    name: {{ .Values.devicePluginName }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.devicePluginName }}-service-account
+  namespace: {{ .Values.basic.namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Values.devicePluginName }}-role
+  apiGroup: rbac.authorization.k8s.io

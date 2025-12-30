@@ -1,0 +1,25 @@
+add_subdirectory(common)
+
+if (EXISTS "/usr/lib64/libcuda.so")
+  message("CUDA detected")
+  option(WITH_CUDA "compile with CUDA API" ON)
+else()
+  message("CUDA not detected, CUDA support disabled")
+  option(WITH_CUDA "compile with CUDA API" OFF)
+endif()
+
+if (DEFINED ENV{ASCEND_TOOLKIT_HOME})
+  message("ACL detected")
+  option(WITH_ACL "compile with ACL API" ON)
+else()
+  message("ACL not detected, ACL support disabled")
+  option(WITH_ACL "compile with ACL API" OFF)
+endif()
+
+if(WITH_CUDA)
+  add_subdirectory(cuda)
+endif()
+
+if(WITH_ACL)
+  add_subdirectory(acl)
+endif()
