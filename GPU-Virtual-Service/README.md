@@ -1,6 +1,6 @@
-## Flex:ai 本地XPU虚拟化
+## Flex:ai 本地GPU虚拟化
 
-Flex:ai开源项目，提供将XPU算力卡进行虚拟化切分，以及面向AI训推任务和集群资源做智能调度的能力。
+Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向AI训推任务和集群资源做智能调度的能力。
 
 ## 安装说明
 
@@ -138,7 +138,7 @@ cd Flex-AI-main/install/helm && helm package gpupool
 
 获得 `gpupool-0.1.0.tgz`。
 
-##### 安装nvidia-container-toolkit与nvidia driver
+##### 安装nvidia driver与nvidia-container-toolkit
 
 在运行业务的gpu节点上下载：
 
@@ -191,7 +191,13 @@ systemctl daemon-reload
 systemctl restart containerd
 ```
 
-#### 3.2 拉起虚拟组件
+#### 3.2 拉起调度组件
+调度组件的yaml可以在`yaml/`文件夹中找到, 并部署到k8s集群
+```Bash
+kubectl apply -f volcano-development.yaml
+```
+
+#### 3.3 拉起GPU虚拟化组件
 
 将镜像和helm chart包上传至运行业务的gpu节点上，将镜像导入到节点上。执行如下命令：
 
@@ -199,18 +205,17 @@ systemctl restart containerd
 kubectl patch runtimeclass nvidia --type=merge \
     --patch '{"metadata":{"labels":{"app.kubernetes.io/managed-by":"helm"},"annotations":{"meta.helm.sh/release-name":"gpupool","meta.helm.sh/release-namespace":"default"}}}'
 kubectl label node {node-name} gpupool.com/gpu-ready=true
-helm install gpupool gpupool-0.1.0.tgz --set runtimeType="{runtimeType}" --set osType={osType}
+helm install gpupool gpupool-0.1.0.tgz --set runtimeType="{runtimeType}"
 ```
 
-其中：{runtimeType} 和 {osType} 应被替换为实际的值，示例如下：
-helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd" --set osType=centos
+其中：{runtimeType} 应被替换为实际的值，示例如下：
+helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd"
 
 - `runtimeType` 支持`docker`/`containerd`两种输入
-- `osType` 支持`centos`、`rhel`、`ubuntu`、`debian`四种输入。**（当前仅支持`centos`）**
 
 安装完成后，使用`kubectl get pod -A`查看pod状态，`running`表示状态正常。
 
-## 本地XPU虚拟化应用
+## 本地GPU虚拟化应用
 
 **版本约束：**
 
