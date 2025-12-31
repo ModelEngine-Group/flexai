@@ -1,0 +1,39 @@
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: client-update-daemonset
+  namespace: xpu
+spec:
+  selector:
+    matchLabels:
+      name: client-update
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: client-update
+    spec:
+      nodeSelector:
+        huawei.com/vgpu: ready
+      priorityClassName: "system-node-critical"
+      hostPID: true
+      hostNetwork: true
+      containers:
+      - name: client-update
+        image: client_update:2.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: opt-xpu
+          mountPath: /opt/xpu
+        - name: usr-lib64
+          mountPath: /usr/lib64
+      volumes:
+        - name: opt-xpu
+          hostPath:
+            path: /opt/xpu
+        - name: usr-lib64
+          hostPath:
+            path: /usr/lib64

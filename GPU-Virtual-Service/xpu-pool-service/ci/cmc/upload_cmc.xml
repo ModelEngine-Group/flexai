@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <artifact>
+    <versionType>BVersion</versionType>
+    <repoType>Generic</repoType>
+    <id>
+      <offering>eContainer</offering>
+      <version>${CMC_VERSION}</version>
+    </id>
+    <isClear>N</isClear>
+    <copies>
+      <copy>
+        <source>output/software/*</source>
+        <dest></dest>
+      </copy>
+      <copy>
+        <repoUsage>inner</repoUsage>
+        <source>output/inner/*</source>
+        <dest>symbol</dest>
+      </copy>
+    </copies>
+  </artifact>
+  <dependencies>
+  <dependencies/>
+</project>

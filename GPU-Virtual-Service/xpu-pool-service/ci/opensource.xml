@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project remote="open-codehub" groups="spilog" path="${branch}/ci/third_party/spilog" name="OpenSourceCenter/gabime/spdlog.git" revision="refs/tags/v1.12.0" />
+  <project remote="open-codehub" groups="kubernetes" path="${branch}/ci/third_party/kubernetes" name="OpenSourceCenter/kubernetes/kubernetes.git" revision="refs/tags/v1.31.1-h2" />
+  <project remote="open-codehub" groups="ascend-runtime" path="${branch}/ci/third_party/runtime" name="OpenBaize/Ascend/runtime.git" revision="5f02d026a1c8adc5b1d003b694f2ae6e1cca9a7f" />
+</manifest>

@@ -1,0 +1,54 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.npuClientUpdate.name }}-daemonset
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    name: {{ .Values.npuClientUpdate.labels.name }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.npuClientUpdate.name }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.npuClientUpdate.name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      {{- with .Values.npu.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.npuClientUpdate.name }}
+        image: {{ .Values.basic.swr_addr }}/{{ .Values.npuClientUpdate.image.name }}:{{ .Values.npuClientUpdate.image.version }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- with .Values.clientUpdateSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.flavor.npu_client_update_daemonset }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: opt-xpu
+          mountPath: /opt/xpu
+        - name: ascend
+          mountPath: /usr/local/Ascend
+      volumes:
+      - name: opt-xpu
+        hostPath:
+          path: /opt/xpu
+      - name: ascend
+        hostPath:
+          path: /usr/local/Ascend

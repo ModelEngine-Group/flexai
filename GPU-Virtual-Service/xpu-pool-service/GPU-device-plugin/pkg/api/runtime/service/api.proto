@@ -1,0 +1,24 @@
+syntax = 'proto3';
+
+option go_package = "./;service";
+
+service PidsService {
+  rpc GetPids(GetPidsRequest) returns (GetPidsResponse) {}
+  rpc GetAllVxpuInfo(GetAllVxpuInfoRequest) returns (GetAllVxpuInfoResponse) {}
+}
+
+message GetPidsRequest {
+  string CgroupPath = 1;
+}
+
+message GetPidsResponse {
+  string EncodedPids = 1;
+}
+
+message GetAllVxpuInfoRequest {
+  string Period = 1;
+}
+
+message GetAllVxpuInfoResponse {
+  string VxpuInfos = 1;
+}

@@ -1,0 +1,43 @@
+diff --git a/pkg/scheduler/api/resource_info.go b/pkg/scheduler/api/resource_info.go
+index 62d2fc484..19a6c8030 100644
+--- a/pkg/scheduler/api/resource_info.go
++++ b/pkg/scheduler/api/resource_info.go
+@@ -67,6 +67,18 @@ func EmptyResource() *Resource {
+ 	return &Resource{}
+ }
+ 
++func CheckXPUResourceIgnore(rName string) bool {
++	xpuResource := make(map[string]struct{})
++	xpuResource["huawei.com/vgpu-number"] = struct{}{}
++	xpuResource["huawei.com/vnpu-number"] = struct{}{}
++	if strings.HasPrefix(rName, "huawei.com/") {
++		if _, ok := xpuResource[rName]; !ok {
++			return true
++		}
++	}
++	return false
++}
++
+ // NewResource creates a new resource object from resource list
+ func NewResource(rl v1.ResourceList) *Resource {
+ 	r := EmptyResource()
+@@ -95,6 +107,7 @@ func NewResource(rl v1.ResourceList) *Resource {
+ 					}
+ 					return true
+ 				})
++				ignore = CheckXPUResourceIgnore(rName.String())
+ 				if !ignore {
+ 					r.AddScalar(rName, float64(rQuant.MilliValue()))
+ 				} else {
+diff --git a/pkg/scheduler/plugins/util/util.go b/pkg/scheduler/plugins/util/util.go
+index 8e3dab291..6422ba0f5 100644
+--- a/pkg/scheduler/plugins/util/util.go
++++ b/pkg/scheduler/plugins/util/util.go
+@@ -113,6 +113,7 @@ func GetInqueueResource(job *api.JobInfo, allocated *api.Resource) *api.Resource
+ 				}
+ 				return true
+ 			})
++			ignore = api.CheckXPUResourceIgnore(rName.String())
+ 			if ignore {
+ 				continue
+ 			}

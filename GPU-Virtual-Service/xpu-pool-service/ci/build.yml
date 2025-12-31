@@ -1,0 +1,48 @@
+---
+version: 2.0
+
+buildspace:
+  fixed: true
+  path: /usr1/workspace
+
+params:
+  - name: image_name_x86
+    value: szvecr02.his.huawei.com:80/ecr-build/modelengine_xpupool:x86_v6
+  - name: image_name_arm
+    value: szvecr02.his.huawei.com:80/ecr-build/acs_xpupool:arm_v03
+  - name: env_type
+    value: docker
+  - name: img_pool_x86
+    value: docker-sz-service-x86-ondocker-16u-01
+  - name: img_pool_arm
+    value: docker-sz-service-arm-ondocker-64u-02
+
+envs:
+  - condition: env_type == 'label'
+    label: ${eulerx86_label}
+  - condition: env_type == 'docker'
+    resource:
+      type: docker
+      image: ${image_name_x86}
+      resource_class: 16U32G
+      mode: toolbox
+  - condition: env_type == "vpc"
+    resource:
+      type: docker
+      image: ${image_name_x86}
+      pool: ${img_pool_x86}
+      resource_class: 16U32G
+
+buildflow:
+  strategy: Eager
+  flow_metadata:
+    from: job_xpu_pool_build_x86
+  attach_workspace:
+    path: pub_dir
+    resource: efs
+  jobs:
+    - job: job_xpu_pool_build_x86
+      params:
+        - name: key1
+          value: value1
+      build_ref: ci/xpu_pool/build_x86.yml

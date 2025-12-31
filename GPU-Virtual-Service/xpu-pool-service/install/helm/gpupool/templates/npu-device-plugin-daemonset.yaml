@@ -1,0 +1,95 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.npuDevicePlugin.name }}-daemonset
+  namespace: {{ .Values.basic.namespace }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.npuDevicePlugin.name }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.npuDevicePlugin.name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      {{- with .Values.npu.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      hostPID: true
+      hostNetwork: true
+      {{- if .Values.devicePluginName }}
+      serviceAccountName: {{ .Values.devicePluginName }}-service-account
+      {{- end }}
+      containers:
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      - name: LD_LIBRARY_PATH
+        value: /usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver
+        image: {{ .Values.basic.swr_addr }}/{{ .Values.npuDevicePlugin.image.name }}:{{ .Values.npuDevicePlugin.image.version }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        name: npu-device-plugin
+        args:
+          - --device-split-count={{ .Values.deviceSplitCount }}
+          - --logging-console={{ .Values.loggingConsole }}
+        securityContext:
+          privileged: true
+        {{- with .Values.flavor.npu_device_plugin_daemonset }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+          - name: device-plugin
+            mountPath: /var/lib/kubelet/device-plugins
+          - name: etc-xpu
+            mountPath: /etc/xpu
+          - name: cgroup
+            mountPath: /sys/fs/cgroup
+            readOnly: true
+          - name: hostproc
+            mountPath: /hostproc
+            readOnly: true
+          - name: xpu-log
+            mountPath: /var/log/xpu
+          - name: xpu-sock
+            mountPath: /var/lib/xpu
+          - name: ascend
+            mountPath: /usr/local/Ascend
+      volumes:
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/device-plugins
+      - name: etc-xpu
+        hostPath:
+          type: DirectoryOrCreate
+          path: /etc/xpu
+      - name: cgroup
+        hostPath:
+          type: Directory
+          path: /sys/fs/cgroup
+      - name: hostproc
+        hostPath:
+          type: Directory
+          path: /proc
+      - name: xpu-log
+        hostPath:
+          type: DirectoryOrCreate
+          path: /var/log/xpu
+      - name: xpu-sock
+        hostPath:
+          path: /var/lib/xpu
+      - name: ascend
+        hostPath:
+          path: /usr/local/Ascend

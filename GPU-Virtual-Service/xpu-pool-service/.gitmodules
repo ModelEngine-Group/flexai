@@ -1,0 +1,7 @@
+[submodule "third_party/kubernetes"]
+	path = third_party/kubernetes
+	url = https://szv-open.codehub.huawei.com/OpenSourceCenter/kubernetes/kubernetes.git
+
+[submodule "third_party/runtime"]
+	path = third_party/runtime
+	url = https://szv-open.codehub.huawei.com/OpenBaize/Ascend/runtime.git
