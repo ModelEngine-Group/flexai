@@ -10,8 +10,8 @@ Flex:ai是一个面向AI容器场景的开源项目，其核心能力包含两�
 
 # GPU虚拟化
 
-请查看[Ascend-Virtual-Service](Ascend-Virtual-Service/)
+请查看[GPU-Virtual-Service](GPU-Virtual-Service/)
 
 # Ascend NPU虚拟化
 
-请查看[GPU-Virtual-Service](GPU-Virtual-Service/)
+请查看[Ascend-Virtual-Service](Ascend-Virtual-Service/)
