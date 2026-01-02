@@ -8,10 +8,10 @@ Flex:ai是一个面向AI容器场景的开源项目，其核心能力包含两�
 
 用户的AI业务集群通常是大小模型混部的场景，集群除了运行AI大模型如Deepseek、Qwen系列，还有大量的小参数量模型，如CV模型、Embedding模型等，这些小参数量模型无法充分使用整张算力卡的资源，从而导致昂贵的GPU/NPU资源存在浪费。此外算力集群中运行的AI工作负载千差万别，如何基于有限的算力资源对大并发的AI工作负载进行高效调度是一个难题。基于上述的背景，我们构筑了Flex:ai开源项目，提供将XPU算力卡进行虚拟化切分，以及面向AI训推任务和集群资源做智能调度的能力。
 
-# GPU虚拟化
+# Ascend NPU虚拟化
 
 请查看[Ascend-Virtual-Service](Ascend-Virtual-Service/)
 
-# Ascend NPU虚拟化
+# GPU虚拟化
 
 请查看[GPU-Virtual-Service](GPU-Virtual-Service/)
