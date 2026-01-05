@@ -20,14 +20,12 @@ NPU：Ascend 910B3 NPU * 1
 
 ## 软件环境 
 
-推荐：使用 vllm-ascend 华为官方镜像 0.8.5rc1 进行配置 
+推荐：使用Ubuntu环境， 使用vllm-ascend 华为官方镜像 0.8.5rc1 进行配置 
 
 1、安装 vllm-ascend 华为官方镜像 
 
 ```
 # Update the vllm-ascend image 
-# openEuler: 
-# export IMAGE=quay.io/ascend/vllm-ascend:v0.8.5rc1-openeuler 
 # Ubuntu: 
 # export IMAGE=quay.io/ascend/vllm-ascend:v0.8.5rc1 
 export IMAGE=quay.io/ascend/vllm-ascend:v0.8.5rc1 
