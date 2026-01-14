@@ -2,16 +2,20 @@
 
 Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向AI训推任务和集群资源做智能调度的能力。
 
-**版本约束：**
+## 版本约束
 
 - 支持的操作系统类型：openEuler（cgroup v1）[推荐下载链接](https://www.openeuler.org/en/download/archive/detail/?version=openEuler%2022.03%20LTS%20SP2)
 
 - K8s支持版本：1.31.1
 
+- nvidai driver： https://www.nvidia.cn/drivers/details/228697/
+
+- nvidia-container-toolkit： [nvidia-container-toolkit_1.16.1_rpm_x86_64.tar.gz](https://github.com/NVIDIA/nvidia-container-toolkit/releases/download/v1.16.1/nvidia-container-toolkit_1.16.1_rpm_x86_64.tar.gz).
+
 ## 安装说明
 
 ### 1、源码编译
-（可选步骤，也可以直接使用我们在Releases中提供的编译后文件。）
+（源码编译为可选步骤，您可以直接使用我们在Releases中提供的编译后文件。）
 
 #### 1.1 cuda劫持
 
