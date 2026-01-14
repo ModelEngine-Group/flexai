@@ -2,9 +2,15 @@
 
 Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向AI训推任务和集群资源做智能调度的能力。
 
+**版本约束：**
+
+- 支持的操作系统类型：openEuler（cgroup v1）[推荐下载链接](https://www.openeuler.org/en/download/archive/detail/?version=openEuler%2022.03%20LTS%20SP2)
+
+- K8s支持版本：1.31.1
+
 ## 安装说明
 
-### 1、源码编译
+### 1、源码编译（可选）
 
 #### 1.1 cuda劫持
 
@@ -217,12 +223,6 @@ helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd"
 安装完成后，使用`kubectl get pod -A`查看pod状态，`running`表示状态正常。
 
 ## 本地GPU虚拟化应用
-
-**版本约束：**
-
-- 支持的操作系统类型：openEuler（cgroup v1）[推荐下载链接](https://www.openeuler.org/en/download/archive/detail/?version=openEuler%2022.03%20LTS%20SP2)
-
-- K8s支持版本：1.31.1
 
 ### 部署流程
 
