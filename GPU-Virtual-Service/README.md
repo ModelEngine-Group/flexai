@@ -14,6 +14,7 @@ Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向A
 wget https://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda_12.2.0_535.54.03_linux.run
 sudo sh cuda_12.2.0_535.54.03_linux.run
 ```
+根据指引安装cuda。
 
 2. 安装依赖项
 
