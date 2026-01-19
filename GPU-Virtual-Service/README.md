@@ -76,6 +76,8 @@ cd Flex-AI-main/GPU-device-plugin && go mod tidy && make
 
 ### 2、打包镜像
 
+（打包镜像为可选步骤，您可以直接使用我们在Releases中提供的打包后文件。）
+
 将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
 
 ```Bash
@@ -213,7 +215,7 @@ kubectl apply -f volcano-development.yaml
 
 拉起虚拟化组件前，需要将先前打包好的镜像读取到对应（`docker`或`containerd`）的镜像仓库中。
 
-将镜像和helm chart包上传至运行业务的gpu节点上，将镜像导入到节点上。执行如下命令：
+将镜像和helm chart包上传至运行业务的GPU节点上，将镜像导入到该节点上。执行如下命令：
 
 ```Bash
 kubectl patch runtimeclass nvidia --type=merge \
