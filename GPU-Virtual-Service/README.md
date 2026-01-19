@@ -81,8 +81,8 @@ cd Flex-AI-main/GPU-device-plugin && go mod tidy && make
 ```Bash
 cp -rf xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update
 cp -rf xpu-pool-service/build/direct/cuda/gpu-monitor docker-build/client-update
-chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update
 cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-update
+chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update
 ```
 
 其中除`cuda-client-update.sh`为脚本文件，剩下的均为编译结果
@@ -91,7 +91,7 @@ cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-up
 cp -rf xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
 ```
 
-在`docker-build/client-update`目录下执行：
+在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
 
 ```Bash
 docker build -t cuda-client-update:2.0 .
@@ -118,7 +118,7 @@ volcano调度的打包流程与上述相仿，将编译产物复制到对应的`
 `webhook-manage`：`vc-webhook-manager`
 
 然后在`docker-build/`所在的目录下执行`docker build -t {image_name}:v1.10.2 .`
-`{image_name}`分别为`vc-scheduler`、`vc-controller`、`vc-webhook-manage`，与对应的文件夹名称保持一致。
+`{image_name}`分别为`vc-scheduler`、`vc-controller`、`vc-webhook-manage`，与对应的文件名称保持一致。
 
 ### 3、安装部署
 
