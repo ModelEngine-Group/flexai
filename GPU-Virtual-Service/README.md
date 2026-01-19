@@ -211,6 +211,8 @@ kubectl apply -f volcano-development.yaml
 
 #### 3.3 拉起GPU虚拟化组件
 
+拉起虚拟化组件前，需要将先前打包好的镜像读取到对应（`docker`或`containerd`）的镜像仓库中。
+
 将镜像和helm chart包上传至运行业务的gpu节点上，将镜像导入到节点上。执行如下命令：
 
 ```Bash
