@@ -5,141 +5,26 @@ Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向A
 ## 版本约束
 
 - 支持的操作系统类型：openEuler（cgroup v1）[推荐下载链接](https://www.openeuler.org/en/download/archive/detail/?version=openEuler%2022.03%20LTS%20SP2)
-
 - K8s支持版本：1.31.1
-
-- nvidai driver： https://www.nvidia.cn/drivers/details/228697/
-
+- nvidia driver： https://www.nvidia.cn/drivers/details/228697/
 - nvidia-container-toolkit： [nvidia-container-toolkit_1.16.1_rpm_x86_64.tar.gz](https://github.com/NVIDIA/nvidia-container-toolkit/releases/download/v1.16.1/nvidia-container-toolkit_1.16.1_rpm_x86_64.tar.gz).
 
-## 安装说明
+## 安装部署说明
 
-### 1、源码编译
-（源码编译为可选步骤，您可以直接使用我们在Releases中提供的编译后文件。）
+### 1、安装流程
 
-#### 1.1 cuda劫持
-
-1. 安装cuda：
-
-```bash
-wget https://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda_12.2.0_535.54.03_linux.run
-sudo sh cuda_12.2.0_535.54.03_linux.run
-```
-根据指引安装cuda。
-
-2. 安装依赖项
-
-下载 [https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip](https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip) ，执行：
-
-```Bash
-mkdir -p /usr/local/include
-unzip spdlog*.zip && cd spdlog-1.12.0 && cp -rf include/spdlog /usr/local/include
-```
-
-下载 [https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip](https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip) ，执行：
-
-```Bash
-unzip patchelf-0.18.0.zip && cd patchelf-0.18.0
-yum install autoconf automake libtool
-./bootstrap.sh
-./configure
-make
-sudo make install
-```
-
-3. 编译
-
-下载`GPU-Virtual-Service`代码文件，在`GPU-Virtual-Service/xpu-pool-service/`路径中 ，执行：
-
-```Bash
-cd direct && chmod +x make_lib_original.sh && cd -
-mkdir build && cd build && cmake .. && make -j
-```
-
-编译后生成的动态库文件在`direct/cuda`目录下，为`libcuda_direct.so`、`gpu-monitor`。
-
-#### 1.2 设备插件
-
-go的版本为1.25.0，建议保持一致：
-
-```Bash
-export CGO_ENABLED=1
-cd Flex-AI-main/GPU-device-plugin && go mod tidy && make
-```
-编译生成文件：`gpu-device-plugin`、`xpu-client-tool`。
-
-#### 1.3 调度组件
-
-调度组件的编译后文件可以在`lib/`文件夹中找到。
-
-`huawei-xpu.so`、`vc-scheduler`、`vc-controller-manager`、`vc-webhook-manage`。
-
-### 2、打包镜像
-
-（打包镜像为可选步骤，您可以直接使用我们在Releases中提供的打包后文件。）
-
-将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
-
-```Bash
-cp -rf xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update
-cp -rf xpu-pool-service/build/direct/cuda/gpu-monitor docker-build/client-update
-cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-update
-chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update
-```
-
-其中除`cuda-client-update.sh`为脚本文件，剩下的均为编译结果
-
-```Bash
-cp -rf xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
-```
-
-在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
-
-```Bash
-docker build -t cuda-client-update:2.0 .
-```
-
-在`docker-build/gpu-device-plugin`目录下执行：
-
-```Bash
-docker build -t gpu-device-plugin:2.0 .
-```
-
-（上述代码的`.`不能忽略）
-
-至此，镜像制作完成，可以使用如下命令将镜像保存到本地：
-
-```Bash
-docker save -o gpu-device-plugin.tar gpu-device-plugin:2.0
-docker save -o cuda-client-update.tar cuda-client-update:2.0
-```
-
-volcano调度的打包流程与上述相仿，将编译产物复制到对应的`docker-build/`所在的文件夹下：
-`controller-manage`：`vc-controller-manager`
-`scheduler`：`vc-scheduler`、`huawei-xpu.so`
-`webhook-manage`：`vc-webhook-manager`
-
-然后在`docker-build/`所在的目录下执行`docker build -t {image_name}:v1.10.2 .`
-`{image_name}`分别为`vc-scheduler`、`vc-controller`、`vc-webhook-manage`，与对应的文件名称保持一致。
-
-### 3、安装部署
-
-#### 3.1 前置准备
+#### 1.1 前置准备
 
 ##### 安装helm
 
-参考 [https://helm.sh/zh/docs/v3/intro/install/](https://helm.sh/zh/docs/v3/intro/install/)，以下为节选步骤：
-
-1. 下载需要的版本
-
+1. 通过链接下载helm:  [https://helm.sh/zh/docs/v3/intro/install/](https://helm.sh/zh/docs/v3/intro/install/)
 2. 解压：
-
+   
    ```Bash
    tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
    ```
-
 3. 在解压目录中找到helm程序，移动到需要的目录中：
-
+   
    ```Bash
    mv linux-amd64/helm /usr/local/bin/helm
    ```
@@ -147,9 +32,10 @@ volcano调度的打包流程与上述相仿，将编译产物复制到对应的`
 安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
 
 ```Bash
-cd Flex-AI-main/install/helm && helm package gpupool
+cd {filepath}/flexai/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package gpupool
 ```
 
+其中：{filepath} 应被替换为flexai本地代码的路径
 获得 `gpupool-0.1.0.tgz`。
 
 ##### 安装nvidia driver与nvidia-container-toolkit
@@ -205,13 +91,15 @@ systemctl daemon-reload
 systemctl restart containerd
 ```
 
-#### 3.2 拉起调度组件
+#### 1.2 拉起调度组件
+
 调度组件的yaml可以在`yaml/`文件夹中找到, 并部署到k8s集群
+
 ```Bash
 kubectl apply -f volcano-development.yaml
 ```
 
-#### 3.3 拉起GPU虚拟化组件
+#### 1.3 拉起GPU虚拟化组件
 
 拉起虚拟化组件前，需要将先前打包好的镜像读取到对应（`docker`或`containerd`）的镜像仓库中。
 
@@ -233,31 +121,33 @@ helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd"
 
 ## 本地GPU虚拟化应用
 
-### 部署流程
+### 2.部署流程
 
-1. 上传模型权重到希望调度的有xpu卡的工作节点任意目录下
+2.1 上传模型权重到需要调度的gpu工作节点
 
-模型文件：`DeepSeek-R1-Distill-Llama-8B`
+如模型文件：`DeepSeek-R1-Distill-Llama-8B`
 
-2. 拉取vllm镜像
+2.2 拉取vllm镜像
+
+##### docker环境
 
 ```Bash
 docker pull vllm/vllm-openai:latest
 ```
 
-3. 登陆master节点，给有xpu卡的工作节点上标签
+2.3 登陆master节点，给gpu工作节点上标签
 
 ```Bash
 kubectl label nodes <worker-node-name> node-type=llm
 ```
 
-4. 在master节点创建命名空间
+2.4 在master节点创建命名空间
 
 ```Bash
 kubectl create namespace deepseek-test
 ```
 
-5. 在master节点编辑并上传`deployment.yaml`和`service.yaml`
+2.5 在master节点编辑`deployment.yaml`和`service.yaml`
 
 - **deployment.yaml**
 
@@ -334,7 +224,7 @@ spec:
             periodSeconds: 5
 ```
 
-6. 在业务pod的yaml里申请vgpu资源, 其中：
+2.6 在业务pod的yaml里申请vgpu资源, 其中：
 
 | 参数            | 说明                               |
 | --------------- | ---------------------------------- |
@@ -343,13 +233,11 @@ spec:
 | vgpu-memory-1Gi | 表示申请的显存占用(Gi)             |
 
 - {path/to/DeepSeek-R1-Distill-llama-8B-main} 应被替换为模型权重路径
-
 - 规格：
-
+  
   一张GPU卡可以分1-5个vgpu，可以给1-5个容器使用。
-
+  
   一个容器能够使用的vgpu数量小于等于当前节点物理GPU卡数量。
-
 - **service.yaml**
 
 ```YAML
@@ -370,23 +258,23 @@ spec:
   type: ClusterIP
 ```
 
-### 启动
+##### 启动
 
-将镜像文件放入对应的本地挂载路径之后，执行：
+2.7 将镜像文件放入对应的本地挂载路径之后，执行：
 
 ```Bash
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 ```
 
-检查pod状态：
+2.8 检查pod状态, 并记录模型pod的ip：
 
 ```Bash
 kubectl get pods -A
 kubectl describe pods <pod_name>
 ```
 
-容器创建成功之后，查看执行日志：
+2.9 容器创建成功之后，查看执行日志：
 
 ```Bash
 kubectl logs -n <namespace> <pod_name>
@@ -394,27 +282,21 @@ kubectl logs -n <namespace> <pod_name>
 
 出现类似于：`INFO 03-27 23:19:15 api_server.py:958] Starting vLLM API server on http://0.0.0.0:8000`，即为成功。
 
-查看GPU卡使用情况：
+2.10 查看GPU卡使用情况：
 
 ```Bash
 watch -n 0.1 nvidia-smi
 ```
 
-### 调用
+##### 调用
 
-首先获取IP地址：
-
-```Bash
-kubectl get pods -o wide -A
-```
-
-获取接口说明：
+2.11 获取接口说明：
 
 ```Bash
 curl -X GET "http://<service-ip>:8000/openapi.json"
 ```
 
-聊天：
+2.12 聊天：
 
 ```Bash
 curl -X POST http://<service-ip>:8000/v1/chat/completions -H "Content-Type: application/json" -d '{
@@ -432,7 +314,8 @@ curl -X POST http://<service-ip>:8000/v1/chat/completions -H "Content-Type: appl
 
 ### 体验算力切分效果
 
-查看gpu卡最高利用率在是否在设定的`vgpu-cores`百分比上下波动，执行
+2.13 查看gpu卡最高利用率在是否在设定的`vgpu-cores`百分比上下波动，执行
+
 ```BASH
 kubectl exec -it <pod_name> -- watch -n 1 /opt/xpu/bin/gpu-monitor -p 1
 ```
@@ -449,8 +332,119 @@ kubectl exec -it <pod_name> -- watch -n 1 /opt/xpu/bin/gpu-monitor -p 1
 | tensor-parallel-size   | 张量并行的副本数量                                 | -                                   |
 
 - vLLM默认通过gpu-memory-utilization参数（默认值0.9）预分配GPU显存以支持动态KV缓存
-
 - `gpu-memory-utilization`参数下调后，如果出现启动失败，需要根据错误信息对应下调`--max-model-len`参数
 
+## 编译与镜像构建（安装前可选）
 
+### 源码编译(可选)
+
+（源码编译为可选步骤，您可以直接使用我们在Releases中提供的编译后文件。）
+
+#### cuda劫持
+
+1. 安装cuda：
+
+```bash
+wget https://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda_12.2.0_535.54.03_linux.run
+sudo sh cuda_12.2.0_535.54.03_linux.run
+```
+
+根据指引安装cuda。
+
+2. 安装依赖项
+
+下载 [https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip](https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip) ，执行：
+
+```Bash
+mkdir -p /usr/local/include
+unzip spdlog*.zip && cd spdlog-1.12.0 && cp -rf include/spdlog /usr/local/include
+```
+
+下载 [https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip](https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip) ，执行：
+
+```Bash
+unzip patchelf-0.18.0.zip && cd patchelf-0.18.0
+yum install autoconf automake libtool
+./bootstrap.sh
+./configure
+make
+sudo make install
+```
+
+3. 编译
+
+下载`GPU-Virtual-Service`代码文件，在`GPU-Virtual-Service/xpu-pool-service/`路径中 ，执行：
+
+```Bash
+cd direct && chmod +x make_lib_original.sh && cd -
+mkdir build && cd build && cmake .. && make -j
+```
+
+编译后生成的动态库文件在`direct/cuda`目录下，为`libcuda_direct.so`、`gpu-monitor`。
+
+#### 设备插件
+
+go的版本为1.25.0，建议保持一致：
+
+```Bash
+export CGO_ENABLED=1
+cd {filepath}/flexai/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod tidy && make
+```
+
+其中：{filepath} 应被替换为flexai本地代码的路径
+编译生成文件：`gpu-device-plugin`、`xpu-client-tool`。
+
+#### 调度组件
+
+调度组件的编译后文件可以在`lib/`文件夹中找到。
+
+`huawei-xpu.so`、`vc-scheduler`、`vc-controller-manager`、`vc-webhook-manage`。
+
+### 打包镜像
+
+（打包镜像为可选步骤，您可以直接使用我们在Releases中提供的打包后文件。）
+
+将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
+
+```Bash
+cp -rf xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update
+cp -rf xpu-pool-service/build/direct/cuda/gpu-monitor docker-build/client-update
+cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-update
+chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update
+```
+
+其中除`cuda-client-update.sh`为脚本文件，剩下的均为编译结果
+
+```Bash
+cp -rf xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
+```
+
+在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
+
+```Bash
+docker build -t cuda-client-update:2.0 .
+```
+
+在`docker-build/gpu-device-plugin`目录下执行：
+
+```Bash
+docker build -t gpu-device-plugin:2.0 .
+```
+
+（上述代码的`.`不能忽略）
+
+至此，镜像制作完成，可以使用如下命令将镜像保存到本地：
+
+```Bash
+docker save -o gpu-device-plugin.tar gpu-device-plugin:2.0
+docker save -o cuda-client-update.tar cuda-client-update:2.0
+```
+
+volcano调度的打包流程与上述相仿，将编译产物复制到对应的`docker-build/`所在的文件夹下：
+`controller-manage`：`vc-controller-manager`
+`scheduler`：`vc-scheduler`、`huawei-xpu.so`
+`webhook-manage`：`vc-webhook-manager`
+
+然后在`docker-build/`所在的目录下执行`docker build -t {image_name}:v1.10.2 .`
+`{image_name}`分别为`vc-scheduler`、`vc-controller`、`vc-webhook-manage`，与对应的文件名称保持一致。
 
