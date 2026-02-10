@@ -129,13 +129,13 @@ helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd"
 
 2.2 拉取vllm镜像
 
-docker：
+- docker：
 
 ```Bash
 docker pull vllm/vllm-openai:latest
 ```
 
-containerd：
+- containerd：
 
 ```Bash
 ctr image pull vllm/vllm-openai:latest
