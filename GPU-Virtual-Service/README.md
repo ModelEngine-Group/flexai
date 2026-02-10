@@ -93,6 +93,14 @@ systemctl restart containerd
 
 #### 1.2 拉起调度组件
 
+导入镜像仓
+
+```Bash
+ctr -n=k8s.io i import volcanosh-vc-controller.tar.gz 
+ctr -n=k8s.io i import volcanosh-vc-scheduler.tar.gz
+ctr -n=k8s.io i import volcanosh-vc-webhook-manage.tar.gz
+```
+
 调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
 
 ```Bash
