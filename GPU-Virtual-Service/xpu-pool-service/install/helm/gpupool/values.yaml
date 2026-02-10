@@ -50,7 +50,7 @@ xpuExporter:
   port: 8082
   image:
     name: xpu_exporter
-    version:"2.0"
+    version: "2.0"
   https: '"off"'
 
 imagePullPolicy: IfNotPresent
