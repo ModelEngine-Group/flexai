@@ -129,10 +129,16 @@ helm install gpupool gpupool-0.1.0.tgz --set runtimeType="containerd"
 
 2.2 拉取vllm镜像
 
-##### docker环境
+docker：
 
 ```Bash
 docker pull vllm/vllm-openai:latest
+```
+
+containerd：
+
+```Bash
+ctr image pull vllm/vllm-openai:latest
 ```
 
 2.3 登陆master节点，给gpu工作节点上标签
