@@ -32,7 +32,7 @@ Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向A
 安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
 
 ```Bash
-cd {filepath}/flexai/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package gpupool
+cd {filepath}/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package gpupool
 ```
 
 其中：{filepath} 应被替换为flexai本地代码的路径
@@ -388,7 +388,7 @@ go的版本为1.25.0，建议保持一致：
 
 ```Bash
 export CGO_ENABLED=1
-cd {filepath}/flexai/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod tidy && make
+cd {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod tidy && make
 ```
 
 其中：{filepath} 应被替换为flexai本地代码的路径
