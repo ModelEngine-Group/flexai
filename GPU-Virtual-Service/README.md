@@ -95,10 +95,19 @@ systemctl restart containerd
 
 导入镜像仓
 
+- containerd：
+  
 ```Bash
-ctr -n=k8s.io i import volcanosh-vc-controller.tar.gz 
-ctr -n=k8s.io i import volcanosh-vc-scheduler.tar.gz
-ctr -n=k8s.io i import volcanosh-vc-webhook-manage.tar.gz
+ctr -n=k8s.io i import volcanosh-vc-controller.tar 
+ctr -n=k8s.io i import volcanosh-vc-scheduler.tar
+ctr -n=k8s.io i import volcanosh-vc-webhook-manage.tar
+```
+- docker：
+  
+```Bash
+docker load -i volcanosh-vc-controller.tar 
+docker load -i volcanosh-vc-scheduler.tar
+docker load -i volcanosh-vc-webhook-manage.tar
 ```
 
 调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
@@ -109,7 +118,21 @@ kubectl apply -f volcano-development.yaml
 
 #### 1.3 拉起GPU虚拟化组件
 
-拉起虚拟化组件前，需要将先前打包好的镜像读取到对应（`docker`或`containerd`）的镜像仓库中。
+导入镜像仓
+
+- containerd：
+
+```Bash
+ctr -n=k8s.io i import gpu-device-plugin.tar 
+ctr -n=k8s.io i import cuda-client-update.tar
+```
+
+- docker：
+
+```Bash
+docker load -i gpu-device-plugin.tar 
+docker load -i cuda-client-update.tar
+```
 
 将镜像和helm chart包上传至运行业务的GPU节点上，将镜像导入到该节点上。执行如下命令：
 
