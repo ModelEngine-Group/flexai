@@ -93,7 +93,7 @@ systemctl restart containerd
 
 #### 1.2 拉起调度组件
 
-调度组件的yaml可以在`yaml/`文件夹中找到, 并部署到k8s集群
+调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
 
 ```Bash
 kubectl apply -f volcano-development.yaml
