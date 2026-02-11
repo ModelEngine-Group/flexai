@@ -89,9 +89,9 @@ systemctl restart containerd
 - containerd：
   
 ```Bash
-ctr -n=k8s.io i import volcanosh-vc-controller.tar 
-ctr -n=k8s.io i import volcanosh-vc-scheduler.tar
-ctr -n=k8s.io i import volcanosh-vc-webhook-manage.tar
+ctr -n=k8s.io i import vc-controller.tar 
+ctr -n=k8s.io i import vc-scheduler.tar
+ctr -n=k8s.io i import vc-webhook-manage.tar
 ```
 - docker：
   
