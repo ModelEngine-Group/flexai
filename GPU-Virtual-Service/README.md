@@ -96,9 +96,9 @@ ctr -n=k8s.io i import vc-webhook-manage.tar
 - docker：
   
 ```Bash
-docker load -i volcanosh-vc-controller.tar 
-docker load -i volcanosh-vc-scheduler.tar
-docker load -i volcanosh-vc-webhook-manage.tar
+docker load -i vc-controller.tar 
+docker load -i vc-scheduler.tar
+docker load -i vc-webhook-manage.tar
 ```
 
 调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
