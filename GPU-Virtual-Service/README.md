@@ -29,15 +29,6 @@ Flex:ai开源项目，提供将GPU算力卡进行虚拟化切分，以及面向A
    mv linux-amd64/helm /usr/local/bin/helm
    ```
 
-安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
-
-```Bash
-cd {filepath}/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package gpupool
-```
-
-其中：{filepath} 应被替换为flexai本地代码的路径
-获得 `gpupool-0.1.0.tgz`。
-
 ##### 安装nvidia driver与nvidia-container-toolkit
 
 在运行业务的gpu节点上下载：
@@ -134,7 +125,16 @@ docker load -i gpu-device-plugin.tar
 docker load -i cuda-client-update.tar
 ```
 
-将镜像和helm chart包上传至运行业务的GPU节点上，将镜像导入到该节点上。执行如下命令：
+安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
+
+```Bash
+cd {filepath}/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package gpupool
+```
+
+其中：{filepath} 应被替换为flexai本地代码的路径
+获得 `gpupool-0.1.0.tgz`。
+
+然后执行如下命令：
 
 ```Bash
 kubectl patch runtimeclass nvidia --type=merge \
