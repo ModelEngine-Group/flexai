@@ -101,6 +101,12 @@ docker load -i vc-scheduler.tar
 docker load -i vc-webhook-manage.tar
 ```
 
+创建xpu命名空间
+
+```Bash
+kubectl create namespace xpu
+```
+
 调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
 
 ```Bash
@@ -138,7 +144,7 @@ cd {filepath}/GPU-Virtual-Service/xpu-pool-service/install/helm && helm package 
 
 ```Bash
 kubectl patch runtimeclass nvidia --type=merge \
-    --patch '{"metadata":{"labels":{"app.kubernetes.io/managed-by":"helm"},"annotations":{"meta.helm.sh/release-name":"gpupool","meta.helm.sh/release-namespace":"default"}}}'
+    --patch '{"metadata":{"labels":{"app.kubernetes.io/managed-by":"Helm"},"annotations":{"meta.helm.sh/release-name":"gpupool","meta.helm.sh/release-namespace":"default"}}}'
 kubectl label node {node-name} gpupool.com/gpu-ready=true
 helm install gpupool gpupool-0.1.0.tgz --set runtimeType="{runtimeType}"
 ```
@@ -236,11 +242,11 @@ spec:
             requests: # vgpu资源配置
               huawei.com/vgpu-number: 1
               huawei.com/vgpu-cores: 20
-              huawei.com/vgpu-memory-1Gi: 3
-          limits:
-            huawei.com/vgpu-number: 1
-            huawei.com/vgpu-cores: 20
-            huawei.com/vgpu-memory-1Gi: 3
+              huawei.com/vgpu-memory.1Gi: 3
+            limits:
+              huawei.com/vgpu-number: 1
+              huawei.com/vgpu-cores: 20
+              huawei.com/vgpu-memory.1Gi: 3
           volumeMounts:
             - name: local-models
               mountPath: {path/to/DeepSeek-R1-Distill-llama-8B-main}  # 填写模型权重路径
