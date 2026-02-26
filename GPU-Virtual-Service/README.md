@@ -416,7 +416,7 @@ sudo make install
 
 3. 编译
 
-下载`GPU-Virtual-Service`代码文件，在`GPU-Virtual-Service/xpu-pool-service/`路径中 ，执行：
+下载`GPU-Virtual-Service`代码文件，在`GPU-Virtual-Service/xpu-pool-service/xpu-pool-service/`路径中 ，执行：
 
 ```Bash
 cd direct && chmod +x make_lib_original.sh && cd -
