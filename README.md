@@ -15,3 +15,6 @@ Flex:ai是一个面向AI容器场景的开源项目，其核心能力包含两�
 # GPU虚拟化
 
 请查看[GPU-Virtual-Service](GPU-Virtual-Service/)
+
+# License
+UCM is licensed under the MIT with additional conditions. Please read the LICENSE file for details.
