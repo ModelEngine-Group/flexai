@@ -403,6 +403,11 @@ mkdir -p /usr/local/include
 unzip spdlog*.zip && cd spdlog-1.12.0 && cp -rf include/spdlog /usr/local/include
 ```
 
+验证是否spdlog安装成功，可以用以下命令，如果有spdlog.h等文件，即安装成功
+```Bash
+ls /usr/local/include/spdlog/
+```
+
 下载 [https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip](https://github.com/NixOS/patchelf/archive/refs/tags/0.18.0.zip) ，执行：
 
 ```Bash
@@ -412,6 +417,11 @@ yum install autoconf automake libtool
 ./configure
 make
 sudo make install
+```
+
+验证是否patchelf安装成功，可以用以下命令，如果有返回patchelf版本号，即安装成功
+```Bash
+patchelf --version
 ```
 
 3. 编译
