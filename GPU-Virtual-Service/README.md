@@ -394,6 +394,12 @@ sudo sh cuda_12.2.0_535.54.03_linux.run
 
 根据指引安装cuda。
 
+验证是否spdlog安装成功，可以用以下命令，如果有spdlog.h等文件，即安装成功
+
+```Bash
+nvcc --version
+```
+
 2. 安装依赖项
 
 下载 [https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip](https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.zip) ，执行：
