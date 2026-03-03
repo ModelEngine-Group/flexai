@@ -472,6 +472,13 @@ chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool
 cp -rf xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
 ```
 
+通过以下链接下载os基础镜像，然后再部署
+https://repo.openeuler.org/openEuler-22.03-LTS-SP2/docker_img/x86_64/
+
+```Bash
+docker load -i openEuler-docker.x86_64.tar.xz
+```
+
 在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
 
 ```Bash
