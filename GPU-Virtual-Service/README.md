@@ -394,7 +394,7 @@ sudo sh cuda_12.2.0_535.54.03_linux.run
 
 根据指引安装cuda。
 
-验证是否spdlog安装成功，可以用以下命令，如果有spdlog.h等文件，即安装成功
+验证是否cuda安装成功，可以用以下命令，如果有显示nvcc版本，即安装成功
 
 ```Bash
 nvcc --version
