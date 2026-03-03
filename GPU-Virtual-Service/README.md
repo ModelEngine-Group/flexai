@@ -466,10 +466,10 @@ cd {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod t
 将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
 
 ```Bash
-cp -rf xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update
-cp -rf xpu-pool-service/build/direct/cuda/gpu-monitor docker-build/client-update
-cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-update
-chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update
+cp -rf xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update/GPU-client
+cp -rf xpu-pool-service/build/direct/cuda/gpu-monitor docker-build/client-update/GPU-client
+cp -rf xpu-pool-service/GPU-device-plugin/xpu-client-tool docker-build/client-update/GPU-client
+chmod +x xpu-pool-service/client_update/cuda-client-update.sh && cp -rf xpu-pool-service/client_update/cuda-client-update.sh docker-build/client-update/GPU-client
 ```
 
 其中除`cuda-client-update.sh`为脚本文件，剩下的均为编译结果
