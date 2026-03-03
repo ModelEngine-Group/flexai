@@ -475,7 +475,7 @@ chmod +x {filepath}/GPU-Virtual-Service/xpu-pool-service/client_update/cuda-clie
 其中除`cuda-client-update.sh`为脚本文件，剩下的均为编译结果
 
 ```Bash
-cp -rf xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
+cp -rf {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
 ```
 
 通过以下链接下载os基础镜像，然后再部署
