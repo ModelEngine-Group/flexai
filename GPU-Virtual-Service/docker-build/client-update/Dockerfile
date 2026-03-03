@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM openEuler-22.03-LTS-SP2
 
 COPY ./GPU-client /root
 
