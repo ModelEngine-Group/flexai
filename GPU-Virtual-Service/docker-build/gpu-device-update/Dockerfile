@@ -1,4 +1,4 @@
-FROM openEuler-22.03-LTS-SP2
+FROM openeuler-22.03-lts-sp2
 
 COPY gpu-device-plugin /opt/xpu/bin
 
