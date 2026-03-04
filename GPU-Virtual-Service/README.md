@@ -443,7 +443,7 @@ mkdir build && cd build && cmake .. && make -j
 
 #### 设备插件
 
-go的版本为1.25.0，建议保持一致：
+go的版本为1.22.1，建议保持一致：
 
 ```Bash
 export CGO_ENABLED=1
