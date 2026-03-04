@@ -486,7 +486,7 @@ https://repo.openeuler.org/openEuler-22.03-LTS-SP2/docker_img/x86_64/
 docker load -i openEuler-docker.x86_64.tar.xz
 ```
 
-然后执行：
+在docker-build/client-update目录下执行：
 
 ```Bash
 docker build -t cuda_client_update:2.0 .
