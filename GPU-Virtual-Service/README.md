@@ -463,7 +463,8 @@ cd {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod t
 
 （打包镜像为可选步骤，您可以直接使用我们在Releases中提供的打包后文件。）
 
-将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
+在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，
+然后将编译后产出的文件复制到`docker-build`对应的目录下，在`GPU-Virtual-Service/`目录下执行：
 
 ```Bash
 cp -rf {filepath}/GPU-Virtual-Service/xpu-pool-service/build/direct/cuda/libcuda_direct.so docker-build/client-update/GPU-client
@@ -485,7 +486,7 @@ https://repo.openeuler.org/openEuler-22.03-LTS-SP2/docker_img/x86_64/
 docker load -i openEuler-docker.x86_64.tar.xz
 ```
 
-在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
+然后执行：
 
 ```Bash
 docker build -t cuda_client_update:2.0 .
