@@ -91,14 +91,14 @@ systemctl restart containerd
 ```Bash
 ctr -n=k8s.io i import vc-controller.tar 
 ctr -n=k8s.io i import vc-scheduler.tar
-ctr -n=k8s.io i import vc-webhook-manage.tar
+ctr -n=k8s.io i import vc-webhook-manager.tar
 ```
 - docker：
   
 ```Bash
 docker load -i vc-controller.tar 
 docker load -i vc-scheduler.tar
-docker load -i vc-webhook-manage.tar
+docker load -i vc-webhook-manager.tar
 ```
 
 创建xpu命名空间
