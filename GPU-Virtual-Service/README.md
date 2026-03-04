@@ -120,15 +120,15 @@ kubectl apply -f volcano-development.yaml
 - containerd：
 
 ```Bash
-ctr -n=k8s.io i import gpu-device-plugin.tar 
-ctr -n=k8s.io i import cuda-client-update.tar
+ctr -n=k8s.io i import gpu_device_plugin.tar 
+ctr -n=k8s.io i import cuda_client_update.tar
 ```
 
 - docker：
 
 ```Bash
-docker load -i gpu-device-plugin.tar 
-docker load -i cuda-client-update.tar
+docker load -i gpu_device_plugin.tar 
+docker load -i cuda_client_update.tar
 ```
 
 安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
@@ -488,13 +488,13 @@ docker load -i openEuler-docker.x86_64.tar.xz
 在`docker-build/client-update`目录下创建文件夹`mkdir GPU-client`，然后执行：
 
 ```Bash
-docker build -t cuda-client-update:2.0 .
+docker build -t cuda_client_update:2.0 .
 ```
 
 在`docker-build/gpu-device-plugin`目录下执行：
 
 ```Bash
-docker build -t gpu-device-plugin:2.0 .
+docker build -t gpu_device_plugin:2.0 .
 ```
 
 （上述代码的`.`不能忽略）
@@ -502,8 +502,8 @@ docker build -t gpu-device-plugin:2.0 .
 至此，镜像制作完成，可以使用如下命令将镜像保存到本地：
 
 ```Bash
-docker save -o gpu-device-plugin.tar gpu-device-plugin:2.0
-docker save -o cuda-client-update.tar cuda-client-update:2.0
+docker save -o gpu_device_plugin.tar gpu_device_plugin:2.0
+docker save -o cuda_client_update.tar cuda_client_update:2.0
 ```
 
 volcano调度的打包流程与上述相仿，将编译产物复制到对应的`docker-build/`所在的文件夹下：
