@@ -101,12 +101,6 @@ docker load -i vc-scheduler.tar
 docker load -i vc-webhook-manager.tar
 ```
 
-创建xpu命名空间
-
-```Bash
-kubectl create namespace xpu
-```
-
 调度组件的yaml可以在`GPU-Virtual-Service/yaml/`文件夹中找到, 并部署到k8s集群
 
 ```Bash
@@ -131,6 +125,11 @@ docker load -i gpu_device_plugin.tar
 docker load -i cuda_client_update.tar
 ```
 
+创建xpu命名空间
+
+```Bash
+kubectl create namespace xpu
+```
 安装完成之后，执行如下命令将`client-update`（cuda劫持）、`gpu-device-plugin`（设备插件）安装部署yaml打包为helm chart包：
 
 ```Bash
