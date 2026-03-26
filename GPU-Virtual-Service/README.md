@@ -277,7 +277,7 @@ spec:
 - {path/to/DeepSeek-R1-Distill-llama-8B-main} 应被替换为模型权重路径
 - 规格：
   
-  一张GPU卡可以分1-5个vgpu，可以给1-5个容器使用。
+  一张GPU卡可以分1-20个vgpu，可以给1-20个容器使用。
   
   一个容器能够使用的vgpu数量小于等于当前节点物理GPU卡数量。
 - **service.yaml**
