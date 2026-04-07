@@ -197,13 +197,13 @@ func updateVgpuDeviceInfo(ch chan<- prometheus.Metric, gpu *utils.XPUDevice) {
 	vgpuPodMap := make(map[string]int)
 	for _, vgpu := range gpu.VxpuDeviceList {
 		ch <- prometheus.MustNewConstMetric(xpuVgpuUtilizationDesc, prometheus.GaugeValue,
-			vgpu.VxpuCoreUtilization, []string{gpu.Id, gpu.NodeName, gpu.NodeIp, vgpu.PodUID,
-				vgpu.ContainerName, vgpu.Id, strconv.Itoa(int(vgpu.VxpuCoreLimit)),
-				strconv.Itoa(int(vgpu.VxpuMemoryLimit))})
+			vgpu.VxpuCoreUtilization, gpu.Id, gpu.NodeName, gpu.NodeIp, vgpu.PodUID,
+			vgpu.ContainerName, vgpu.Id, strconv.Itoa(int(vgpu.VxpuCoreLimit)),
+			strconv.Itoa(int(vgpu.VxpuMemoryLimit)))
 		ch <- prometheus.MustNewConstMetric(xpuVgpuMemoryUtilizationDesc, prometheus.GaugeValue,
-			vgpu.VxpuMemoryUtilization, []string{gpu.Id, gpu.NodeName, gpu.NodeIp, vgpu.PodUID,
-				vgpu.ContainerName, vgpu.Id, strconv.Itoa(int(vgpu.VxpuCoreLimit)),
-				strconv.Itoa(int(vgpu.VxpuMemoryLimit))})
+			vgpu.VxpuMemoryUtilization, gpu.Id, gpu.NodeName, gpu.NodeIp, vgpu.PodUID,
+			vgpu.ContainerName, vgpu.Id, strconv.Itoa(int(vgpu.VxpuCoreLimit)),
+			strconv.Itoa(int(vgpu.VxpuMemoryLimit)))
 		if _, ok := vgpuPodMap[vgpu.PodUID]; !ok {
 			vgpuPodNumber += 1
 			vgpuPodMap[vgpu.PodUID] = vgpuPodNumber

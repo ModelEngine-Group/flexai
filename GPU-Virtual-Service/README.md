@@ -114,15 +114,17 @@ kubectl apply -f volcano-development.yaml
 - containerd：
 
 ```Bash
-ctr -n=k8s.io i import gpu_device_plugin.tar 
+ctr -n=k8s.io i import gpu_device_plugin.tar
 ctr -n=k8s.io i import cuda_client_update.tar
+ctr -n=k8s.io i import xpu-exporter.tar
 ```
 
 - docker：
 
 ```Bash
-docker load -i gpu_device_plugin.tar 
+docker load -i gpu_device_plugin.tar
 docker load -i cuda_client_update.tar
+docker load -i xpu-exporter.tar
 ```
 
 创建xpu命名空间
@@ -452,6 +454,18 @@ cd {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin && go mod t
 其中：{filepath} 应被替换为flexai本地代码的路径
 编译生成文件：`gpu-device-plugin`、`xpu-client-tool`。
 
+#### xpu-exporter
+
+go的版本为1.22.1，建议保持一致：
+
+```Bash
+export CGO_ENABLED=0
+cd {filepath}/GPU-Virtual-Service/xpu-pool-service/xpu-exporter && go mod tidy && go build -o xpu-exporter ./cmd/xpu-exporter
+```
+
+其中：{filepath} 应被替换为flexai本地代码的路径
+编译生成文件：`xpu-exporter`。
+
 #### 调度组件
 
 调度组件的编译后文件可以在`lib/`文件夹中找到。
@@ -476,6 +490,7 @@ chmod +x {filepath}/GPU-Virtual-Service/xpu-pool-service/client_update/cuda-clie
 
 ```Bash
 cp -rf {filepath}/GPU-Virtual-Service/xpu-pool-service/GPU-device-plugin/gpu-device-plugin docker-build/gpu-device-plugin
+cp -rf {filepath}/GPU-Virtual-Service/xpu-pool-service/xpu-exporter/xpu-exporter docker-build/xpu-exporter
 ```
 
 通过以下链接下载os基础镜像，然后再部署
@@ -497,6 +512,12 @@ docker build -t cuda_client_update:2.0 .
 docker build -t gpu_device_plugin:2.0 .
 ```
 
+在`docker-build/xpu-exporter`目录下执行：
+
+```Bash
+docker build -t xpu-exporter:2.0 .
+```
+
 （上述代码的`.`不能忽略）
 
 至此，镜像制作完成，可以使用如下命令将镜像保存到本地：
@@ -504,6 +525,7 @@ docker build -t gpu_device_plugin:2.0 .
 ```Bash
 docker save -o gpu_device_plugin.tar gpu_device_plugin:2.0
 docker save -o cuda_client_update.tar cuda_client_update:2.0
+docker save -o xpu-exporter.tar xpu-exporter:2.0
 ```
 
 volcano调度的打包流程与上述相仿，将编译产物复制到对应的`docker-build/`所在的文件夹下：

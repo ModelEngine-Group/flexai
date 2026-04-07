@@ -9,13 +9,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
 	"sync"
-	"syscall"
 	"time"
 
 	"huawei.com/xpu-exporter/common/cache"
@@ -108,7 +106,7 @@ func (h *limitHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	req.Body = http.MaxBytesReader(w, req.Body, h.limitBytes)
 	ctx := initContext(req)
 	path := req.URL.Path
-	clientUserAgent := req.UserAgent()
+	_ = req.UserAgent() // avoid unused variable error
 	clientIP := utils.ClientIP(req)
 
 	// Check if the IP has exceeded the limit of 20 requests per minute
