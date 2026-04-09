@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 #ifndef XPU_MANAGER_H
 #define XPU_MANAGER_H
 
