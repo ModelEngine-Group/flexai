@@ -1,0 +1,16 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.xpuExporter.name }}-svc
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    app: {{ .Values.xpuExporter.name }}-svc
+spec:
+  selector:
+    app: {{ .Values.xpuExporter.name }}
+  ports:
+  - name: {{ .Values.xpuExporter.name }}-port
+    protocol: TCP
+    port: {{ .Values.xpuExporter.port }}
+    targetPort: 8082

@@ -1,0 +1,70 @@
+version: 2.0
+
+buildspace:
+  fixed: true
+  path: /usr1/workspace
+
+envs:
+  - condition: env_type == 'docker'
+    resource:
+        type: docker
+        image: ${image_name_x86}
+        resource_class: 16U32G
+        mode: toolbox
+  - condition: env_type == "vpc"
+    resource:
+        type: docker
+        image: ${image_name_x86}
+        pool: ${img_pool_x86}
+        resource_class: 16U32G
+
+steps:
+  PRE_BUILD:
+    - checkout:
+        path: ${branch}  # 下载子路径，可选，如果配置，则会把代码下载到子子路径下，如果不配置，则会下载到当前路径
+    - manifest_checkout:
+        manifest_file: ci/dependency.xml
+        groups: spdlog,kubernetes,ascend-runtime
+        repo_depth: 0
+    - artget:
+        artifact_type: cmcbinary
+        action: pull
+        dependency: ${branch}/ci/cmc/copenSource_x86.xml
+        version_output_path: ./
+        agent: ./
+        username: ${CMC_USERNAME}
+        password: ${CMC_PASSWORD}
+
+  BUILD:
+    - build_execute:
+        command: |
+          sh ${branch}/ci/buildinfo.sh
+          sh ${branch}/ci/xpu_pool/build_xpu_package.sh
+        accelerate: false
+        check:
+          buildcheck: true
+          auto: true
+          exclude_dir: ${branch}/manager-b/deploy/agent/
+
+  POST_BUILD:
+    - artget:
+        artifact_type: cloudartifact
+        file_path: output
+        version_output_path: ./
+    - version_set: # 记录version set
+        metadata: true # 开启元数据采集，结合元数据时必要
+        isKiaScan: false
+    - when:
+        condition: upload_cmc == 'true'
+        steps:
+          - artget:
+              artifact_type: cmcbinary
+              action: push
+              params: {"CMC_VERSION": "${CMC_VERSION}"}
+              dependency: ${branch}/ci/cmc/upload_cmc.xml
+              agent: .
+              version_output_path: .
+              add_source_code: push
+              add_env_image: push
+              username: ${CMC_USERNAME}
+              password: ${CMC_PASSWORD}

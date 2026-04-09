@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vgpu-pod1
+spec:
+  schedulerName: volcano
+  containers:
+  - name: ubuntu-container
+    image: docker.io/nvidia/cuda:11.0.3-base-ubuntu18.04
+    command: ["bash", "-c", "sleep 86400"]
+    resources:
+      limits:
+        huawei.com/vgpu-number: 1 # requesting 1 vGPU
+        huawei.com/vgpu-memory.1Gi:1
+        huawei.com/vgpu-cores: 25 # percentage: 50 Each vGPU containers 50% device memory of that GPU. Can not be used with nvidia/gpumem
+  - name: ubuntu-container0
+    image: docker.io/nvidia/cuda:11.0.3-base-ubuntu18.04
+    command: ["bash", "-c", "sleep 86400"]
+  - name: ubuntu-container1
+    image: docker.io/nvidia/cuda:11.0.3-base-ubuntu18.04
+    command: ["bash", "-c", "sleep 86400"]
+    resources:
+      limits:
+        huawei.com/vgpu-number: 1 # requesting 1 vGPU
+        huawei.com/vgpu-memory.1Gi:1

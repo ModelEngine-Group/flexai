@@ -1,0 +1,104 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.gpuDevicePlugin.name }}-daemonset
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    name: {{ .Values.gpuDevicePlugin.labels.name }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.gpuDevicePlugin.name }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.gpuDevicePlugin.name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      {{- with .Values.gpu.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{ if eq .Values.runtimeType "containerd" }}
+      runtimeClassName: {{ .Values.runtimeClassName }}
+      {{- end }}
+      hostPID: true
+      {{- if .Values.devicePluginName }}
+      serviceAccountName: {{ .Values.devicePluginName }}-service-account
+      {{- end }}
+      containers:
+      - env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: "all"
+        image: {{ .Values.basic.swr_addr }}/{{ .Values.gpuDevicePlugin.image.name }}:{{ .Values.gpuDevicePlugin.image.version }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        name: gpu-device-plugin
+        args:
+          - --device-split-count={{ .Values.deviceSplitCount }}
+          - --logging-console={{ .Values.loggingConsole }}
+          - --gpu-type-config=/opt/xpu/config/gpu-type.conf
+        {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.flavor.gpu_device_plugin_daemonset }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+          - name: device-plugin
+            mountPath: /var/lib/kubelet/device-plugins
+          - name: etc-xpu
+            mountPath: /etc/xpu
+          - name: cgroup
+            mountPath: /sys/fs/cgroup
+            readOnly: true
+          - name: hostproc
+            mountPath: /hostproc
+            readOnly: true
+          - name: xpu-log
+            mountPath: /var/log/xpu
+          - name: xpu-sock
+            mountPath: /var/lib/xpu
+          - name: gpu-device-plugin-config
+            mountPath: /opt/xpu/config
+      volumes:
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/device-plugins
+      - name: etc-xpu
+        hostPath:
+          path: /etc/xpu
+      - name: cgroup
+        hostPath:
+          type: Directory
+          path: /sys/fs/cgroup
+      - name: hostproc
+        hostPath:
+          type: Directory
+          path: /proc
+      - name: xpu-log
+        hostPath:
+          type: DirectoryOrCreate
+          path: /var/log/xpu
+      - name: xpu-sock
+        hostPath:
+          path: /var/lib/xpu
+      - name: gpu-device-plugin-config
+        configMap:
+          name: {{ .Values.gpuDevicePlugin.name }}-configmap

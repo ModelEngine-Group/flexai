@@ -1,0 +1,64 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.gpuClientUpdate.name }}-daemonset
+  namespace: {{ .Values.basic.namespace }}
+  labels:
+    name: {{ .Values.gpuClientUpdate.labels.name }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.gpuClientUpdate.name }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.gpuClientUpdate.name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      {{- with .Values.gpu.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.gpuClientUpdate.name }}
+        image: {{ .Values.basic.swr_addr }}/{{ .Values.gpuClientUpdate.image.name }}:{{ .Values.gpuClientUpdate.image.version }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- with .Values.clientUpdateSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.flavor.gpu_client_update_daemonset }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: opt-xpu
+          mountPath: /opt/xpu
+        - name: usr-lib64
+          mountPath: /usr/lib64
+      volumes:
+      - name: opt-xpu
+        hostPath:
+          path: /opt/xpu
+      - name: usr-lib64
+        hostPath:
+          path: {{ if eq .Values.osType "centos" -}}
+                  {{ .Values.cudaPath.centos }}
+                {{- else if eq .Values.osType "ubuntu" }}
+                  {{ .Values.cudaPath.ubuntu }}
+                {{- else if eq .Values.osType "rhel" }}
+                  {{ .Values.cudaPath.rhel }}
+                {{- else if eq .Values.osType "debian" }}
+                  {{ .Values.cudaPath.debian }}
+                {{- else }}
+                  {{ .Values.cudaPath.centos }}
+                {{- end }}

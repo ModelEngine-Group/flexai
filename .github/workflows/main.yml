@@ -1,0 +1,60 @@
+name: CI Pipeline
+run-name: ${{ github.actor }} is testing out GitHub Actions
+
+on:
+  # Run this workflow every time a new commit pushed to upstream/fork repository.
+  # Run workflow on fork repository will help contributors find and resolve issues before sending a PR.
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HELM_VERSION: v3.8.1
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      - name: Set up Environment
+        uses: actions/setup-node@v3 # 示例：Node.js环境
+        with:
+          node-version: '16'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          architecture: "x86"
+          cache: "pip"
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Install dependencies
+        run: pip install make
+
+      - name: Run build
+        run: |
+          make ci
+
+#      - name: Run tests
+#        run: npm test

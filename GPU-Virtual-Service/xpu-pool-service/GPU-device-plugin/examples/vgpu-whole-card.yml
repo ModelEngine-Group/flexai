@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vgpu-pod3
+spec:
+  schedulerName: volcano
+  containers:
+  - name: ubuntu-container
+    image: docker.io/nvidia/cuda:11.0.3-base-ubuntu18.04
+    command: ["bash", "-c", "sleep 86400"]
+    resources:
+      limits:
+        huawei.com/vgpu-number: 1 # requesting 1 vGPU

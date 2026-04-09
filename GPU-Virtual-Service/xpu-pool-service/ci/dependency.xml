@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="codehub" fetch="https://codehub-y.huawei.com/" />
+  <remote name="open-codehub" fetch="https://open.codehub.huawei.com/" />
+  <default remote="codehub" revision="master" />
+  <!-- includes for self -->
+  <include name="ci/opensource.xml" />
+</manifest>

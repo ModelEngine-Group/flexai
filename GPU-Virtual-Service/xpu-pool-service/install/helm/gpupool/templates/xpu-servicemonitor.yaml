@@ -1,0 +1,23 @@
+# Copyright Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+{{- if .Values.ServiceMonitor.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: simbaos-servicemonitor
+  name: {{ .Values.xpuExporter.name }}-servicemonitor
+  namespace: {{ .Values.basic.namespace }}
+spec:
+  endpoints:
+  - honorLabels: true
+    interval: 1m
+    path: /metrics
+    port: xpu-exporter-port
+  jobLabel: {{ .Values.xpuExporter.name }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Values.basic.namespace }}
+  selector:
+    matchLabels:
+      app: {{ .Values.xpuExporter.name }}-svc
+{{- end }}

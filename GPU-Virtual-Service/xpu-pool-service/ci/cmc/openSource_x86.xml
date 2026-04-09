@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <dependencies>
+    <dependency>
+      <versionType>Component</versionType>
+      <repoType>Generic</repoType>
+      <id>
+        <offering>EulerOS Server</offering>
+        <name>EulerOSServerV200R013C00X86</name>
+        <version>2024.07.04.103000</version>
+      </id>
+      <copies>
+        <copy>
+          <source>Software/x86_64/DockerStack/EulerOS_Server_*.-docker.x86_64.tar.xz</source>
+          <dest>EulerOS_Server/x86</dest>
+        </copy>
+        <copy>
+          <source>Software/x86_64/EulerOS-*-x86_64-dvd.iso</source>
+          <dest>EulerOS_Server/x86</dest>
+        </copy>
+      </copies>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,9 @@
+# compiler
+*.o
+*.out
+
+#IDE
+*.swp
+.vscode/
+.vs/
+.idea/

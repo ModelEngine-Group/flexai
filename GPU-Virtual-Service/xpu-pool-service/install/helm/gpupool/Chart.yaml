@@ -1,0 +1,9 @@
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+
+apiVersion: v2
+name: gpupool
+type: application
+description: A Helm chart for the gpupool on Kubernetes
+version: "0.1.0"
+appVersion: "1.16.0"
+kubeVersion: ">= 1.10.0-0"

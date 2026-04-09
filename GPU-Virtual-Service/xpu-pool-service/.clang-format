@@ -1,0 +1,10 @@
+# used for code formatter
+BasedOnStyle: Huawei
+Macros:
+  - TESTABLE_PRIVATE
+  - TESTABLE_PROTECTED
+  - PROC_ADDR_PAIR
+  - ACL_ORIGINAL
+  - CUDA_ORIGINAL
+MacroBlockBegin: FUNC_HOOK_BEGIN
+MacroBlockEnd: FUNC_HOOK_END
