@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
 set -e
 
 WORK_DIR=$(cd $(dirname $0); pwd)

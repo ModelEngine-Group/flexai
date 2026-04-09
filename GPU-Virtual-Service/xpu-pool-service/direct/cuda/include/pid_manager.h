@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 #ifndef PID_MANAGER_H
 #define PID_MANAGER_H
 

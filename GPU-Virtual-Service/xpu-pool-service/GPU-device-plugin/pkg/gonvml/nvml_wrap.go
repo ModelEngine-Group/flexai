@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 // In this file, the cgo feature is used to invoke the NVML library.
 // New APIs are supported based on service requirements.
 

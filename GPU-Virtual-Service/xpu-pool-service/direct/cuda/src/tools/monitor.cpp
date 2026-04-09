@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 #include "monitor.h"
 #include <filesystem>
 #include <iostream>

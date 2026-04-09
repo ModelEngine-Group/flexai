@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 #include <cuda.h>
 #include <dlfcn.h>
 #include <nvml_compat.h>

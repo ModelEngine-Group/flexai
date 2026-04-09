@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 #ifndef NVML_COMPAT_H
 #define NVML_COMPAT_H
 

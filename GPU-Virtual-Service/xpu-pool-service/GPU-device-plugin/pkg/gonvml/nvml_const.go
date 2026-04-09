@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 // The gonvml constant definition is implemented in this file.
 // Package gonvml implements accessing the NVML library using the go
 

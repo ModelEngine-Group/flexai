@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 // Package main implements xpu client tool
 // 用于 Kubernetes GPU 设备插件场景，根据 cgroup 路径查询/更新相关进程 ID 配置，用于资源管理和监控
 package main

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
 set -e
 
 echo "Release is ${ENV_IS_RELEASE}"

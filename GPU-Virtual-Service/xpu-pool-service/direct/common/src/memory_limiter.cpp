@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ */
+
 #include <fcntl.h>
 #include "log.h"
 #include "memory_limiter.h"

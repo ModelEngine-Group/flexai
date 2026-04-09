@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Copyright (C) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
 set -e
 
 build_target=$1
