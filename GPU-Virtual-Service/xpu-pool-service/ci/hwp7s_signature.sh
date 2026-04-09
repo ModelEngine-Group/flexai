@@ -1,5 +1,4 @@
 #!/bin/bash
-# Copyright Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
 # hwp7s签名用于CMC B版本发布
 set -e
 

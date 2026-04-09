@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 // Package server implement the HTTP service for Prometheus to obtain monitoring data
 package server
 

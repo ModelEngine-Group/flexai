@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 #include <atomic>
 #include <cuda.h>
 #include "cuda_resource_limiter.h"
