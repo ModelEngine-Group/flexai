@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 #ifndef GPU_MANAGER_H
 #define GPU_MANAGER_H
 

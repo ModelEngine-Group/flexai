@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 // This file defines the API provided by the gonvml.
 // Package gonvml implements accessing the NVML library using the go
 
