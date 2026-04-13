@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 // Package main implements xpu device plugin
 // 用于XPU设备资源管理和发现
 package main

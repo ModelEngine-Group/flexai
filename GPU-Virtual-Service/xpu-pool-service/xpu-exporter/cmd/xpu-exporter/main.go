@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 // Package main
 // XPU Exporter 是一个 Prometheus 指标导出器，用于收集和暴露 GPU/NPU 设备的监控指标
 package main

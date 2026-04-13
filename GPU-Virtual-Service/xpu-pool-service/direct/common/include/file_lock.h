@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 #ifndef FILE_LOCK_H
 #define FILE_LOCK_H
 

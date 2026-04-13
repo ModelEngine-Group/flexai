@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
-
 #ifndef MEMORY_LIMITER_H
 #define MEMORY_LIMITER_H
 
