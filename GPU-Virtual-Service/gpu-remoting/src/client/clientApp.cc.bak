@@ -1,0 +1,278 @@
+#include <iostream>
+#include <cuda_runtime.h>
+#include "../../include/configure.h"
+#include "../../include/ucpConnection.h"
+#include "../../include/clientEndpoint.h"
+using namespace std;
+
+Configure config_("config.json");
+const char* myName = "ClientApp";
+ClientEndpoint* clientEp;
+UCPConnection* connectionObj;
+
+void cleanup() {
+    delete clientEp;
+    delete connectionObj;
+}
+
+int main(int argc, char* argv[]) {
+    // connectionObj = new UCPConnection(config_.GetServerIp().c_str(), config_.GetServerPort());
+    // clientEp = new ClientEndpoint(connectionObj);
+    // //clientEp->Run();
+    // tool::Logging(myName, "start the client endpoint.\n");
+
+    // int reqNum = 2;
+    // int amID = 0;
+    // ucp_dt_iov_t *iov = (ucp_dt_iov_t *)alloca(reqNum * sizeof(ucp_dt_iov_t));
+    // size_t cuda_size = 4 * 1024 * 1024;
+
+    // size_t* header = (size_t*)malloc(sizeof(size_t) * reqNum);
+
+    // /* batch1: cudaMalloc + cudaSetDevice */
+    // // req1
+    // RequestBuffer reqBuf = RequestBuffer(sizeof(int) + sizeof(size_t));
+    // reqBuf.Push<int>(CUDA_MALLOC);
+    // reqBuf.Push<size_t>(cuda_size);
+    // iov[0].length = reqBuf.GetSize();
+    // iov[0].buffer = reqBuf._dataBuffer;
+    // header[0] = iov[0].length;
+    // tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length);
+
+    // //req2
+    // RequestBuffer reqBuf2 = RequestBuffer(sizeof(int) + sizeof(int));
+    // reqBuf2.Push<int>(CUDA_SET_DEVICE);
+    // reqBuf2.Push<int>(0);
+    // // tool::Logging(myName, "reqBuf2.GetSize() = %zu\n", reqBuf2.GetSize());
+    // // char* msg = (char*)malloc(8000);
+    // // reqBuf2.PushCString(msg);
+    // // tool::Logging(myName, "reqBuf2.GetSize() = %zu\n", reqBuf2.GetSize());
+    // iov[1].length = reqBuf2.GetSize();
+    // iov[1].buffer = reqBuf2._dataBuffer;
+    // header[1] = iov[1].length;
+    // tool::Logging(myName, "iov[1].length = %zu\n", iov[1].length);
+
+    // SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // ucp_dt_iov_t *recv_iov;
+    // uint64_t devPtr = 0;
+    // PrepareSingleIOV(&recv_iov, &devPtr, sizeof(uint64_t));
+    // size_t tmp = 0;
+
+    // ReceiveData(recv_iov, &tmp, &devPtr, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    // tool::Logging(myName, "devPtr = %p(%llu), size = %zu\n", devPtr, devPtr, tmp);
+
+
+    // // /* batch2: cudaFree + cudaSetDevice */
+    // // // req1
+    // // RequestBuffer reqBuf3 = RequestBuffer(sizeof(int) + sizeof(uint64_t));
+    // // reqBuf3.Push<int>(CUDA_FREE);
+    // // reqBuf3.Push64BitPointer(devPtr);
+    // // iov[0].length = reqBuf3.GetSize();
+    // // iov[0].buffer = reqBuf3._dataBuffer;
+    // // header[0] = iov[0].length;
+    // // tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length); 
+
+    // // //req2
+    // // RequestBuffer reqBuf4 = RequestBuffer(sizeof(int) + sizeof(int));
+    // // reqBuf4.Push<int>(CUDA_SET_DEVICE);
+    // // reqBuf4.Push<int>(0);
+    // // iov[1].length = reqBuf4.GetSize();
+    // // iov[1].buffer = reqBuf4._dataBuffer;
+    // // header[1] = iov[1].length;
+    // // tool::Logging(myName, "iov[1].length = %zu\n", iov[1].length);
+    // // SendData(iov, 2, header, sizeof(size_t) * 2, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+
+    // /* batch3: cudaSetDevice + cudaMemset  */
+    // // req1
+    // RequestBuffer reqBuf5 = RequestBuffer(sizeof(int) + sizeof(int));
+    // reqBuf5.Push<int>(CUDA_SET_DEVICE);
+    // reqBuf5.Push<int>(0);
+    // iov[0].length = reqBuf5.GetSize();
+    // iov[0].buffer = reqBuf5._dataBuffer;
+    // header[0] = iov[0].length;
+    // tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length); 
+
+    // //req2
+    // RequestBuffer reqBuf6 = RequestBuffer(sizeof(int) + sizeof(uint64_t) + sizeof(int) + sizeof(size_t) + 3 * 1024 * 1024);
+    // reqBuf6.Push<int>(CUDA_MEMSET);
+    // reqBuf6.Push64BitPointer(devPtr);
+    // reqBuf6.Push<int>(1);
+    // reqBuf6.Push<size_t>(cuda_size);
+    // iov[1].length = reqBuf6.GetSize();
+    // iov[1].buffer = reqBuf6._dataBuffer;
+    // header[1] = iov[1].length;
+    // tool::Logging(myName, "iov[1].length = %zu\n", iov[1].length); 
+    // SendData(iov, 2, header, sizeof(size_t) * 2, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // /* batch4: cudaMemcpy(host -> remote dev) */
+    // //req1
+    // RequestBuffer reqBuf7 = RequestBuffer(sizeof(int) + sizeof(cudaMemcpyKind) + sizeof(size_t) + sizeof(uint64_t));
+    // reqBuf7.Push<int>(CUDA_MEMCPY);
+    // reqBuf7.Push(cudaMemcpyHostToDevice);
+    // reqBuf7.Push<size_t>(cuda_size);
+    // reqBuf7.Push64BitPointer(devPtr);
+    // iov[0].length = reqBuf7.GetSize();
+    // iov[0].buffer = reqBuf7._dataBuffer;
+    // header[0] = iov[0].length;
+    // tool::Logging(myName, "cudaMemcpyHostToDevice, iov[0].length = %zu\n", iov[0].length); 
+    // SendData(iov, 1, header, sizeof(size_t) * 1, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // //req1data
+    // int* hostBuffer;
+    // hostBuffer = (int*)malloc(cuda_size);
+    // for (int i = 0; i < (cuda_size / sizeof(int)); i++) {
+    //     hostBuffer[i] = i;
+    // }
+    // void* devBuffer;
+    // cudaMalloc(&devBuffer, cuda_size);
+    // cudaMemcpy(devBuffer, hostBuffer, cuda_size, cudaMemcpyHostToDevice);
+    
+    // void* dataBuffer = hostBuffer;
+
+    // iov[0].length = cuda_size;
+    // iov[0].buffer = dataBuffer;
+    // header[0] = iov[0].length;
+    // tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length);
+    // SendData(iov, 1, header, sizeof(size_t) * 0, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // /* batch5: cudaMemcpy(remote dev -> host) */
+    // //req1
+    // RequestBuffer reqBuf8 = RequestBuffer(sizeof(int) + sizeof(cudaMemcpyKind) + sizeof(size_t) + sizeof(uint64_t));
+    // reqBuf8.Push<int>(CUDA_MEMCPY);
+    // reqBuf8.Push(cudaMemcpyDeviceToHost);
+    // reqBuf8.Push<size_t>(cuda_size);
+    // reqBuf8.Push64BitPointer(devPtr);
+    // iov[0].length = reqBuf8.GetSize();
+    // iov[0].buffer = reqBuf8._dataBuffer;
+    // header[0] = iov[0].length;
+    // tool::Logging(myName, "cudaMemcpyDeviceToHost, iov[0].length = %zu\n", iov[0].length); 
+    // SendData(iov, 1, header, sizeof(size_t) * 1, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // int* hostBuffer2;
+    // hostBuffer2 = (int*)malloc(cuda_size);
+    // memset(hostBuffer2, 0, cuda_size);
+    // ucp_dt_iov_t *recv_iov2;
+    // size_t iovNum = 0;
+
+    // PrepareSingleIOV(&recv_iov2, hostBuffer2, cuda_size);
+    // ReceiveData(recv_iov2, &iovNum, hostBuffer2, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    // printf("iovNum = %zu, recv data: ", iovNum);
+    // for (int i = 0; i < 20; i++) {
+    //     printf("%02x ", ((uint8_t*)hostBuffer2)[i]);
+    // }
+    // printf("\n");
+
+
+    
+    // hyf: STREAM TEST
+    connectionObj = new UCPConnection(config_.GetServerIp().c_str(), config_.GetServerPort());
+    clientEp = new ClientEndpoint(connectionObj);
+    tool::Logging(myName, "start the client endpoint.\n");
+    int amID = 0;
+    int reqNum = 1;
+    ucp_dt_iov_t *iov = (ucp_dt_iov_t *)alloca(reqNum * sizeof(ucp_dt_iov_t));
+
+    size_t cuda_size = 4 * 1024 * 1024;
+    size_t* header = (size_t*)malloc(sizeof(size_t) * reqNum);
+
+    // req1: cudaStreamCreateWithFlags
+    unsigned int flags = 1; // 0阻塞流，1非阻塞流
+    RequestBuffer reqBuf_1 = RequestBuffer(sizeof(uint));
+    reqBuf_1.Push<int>(CUDA_STREAM_CREATE_WITH_FLAGS);
+    reqBuf_1.Push<uint>(flags);
+    iov[0].length = reqBuf_1.GetSize();
+    iov[0].buffer = reqBuf_1._dataBuffer;
+    header[0] = iov[0].length;
+    tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length);
+
+    SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+    
+    ucp_dt_iov_t *recv_iov;
+    cudaStream_t stream = NULL;
+    PrepareSingleIOV(&recv_iov, &stream, sizeof(cudaStream_t));
+    size_t tmp = 0;
+    // recv pStream
+    ReceiveData(recv_iov, &tmp, &stream, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    tool::Logging(myName, "pStream = %p, size = %zu\n", stream, tmp);
+
+    // req2: cudaStreamSynchronize
+    RequestBuffer reqBuf_2 = RequestBuffer(sizeof(cudaStream_t));
+    reqBuf_2.Push<int>(CUDA_STREAM_SYNCHRONIZE);
+    reqBuf_2.Push64BitPointer(stream);    // pStreamcudaStreamGetCaptureInfoHandle
+    iov[0].length = reqBuf_2.GetSize();
+    iov[0].buffer = reqBuf_2._dataBuffer;
+    header[0] = iov[0].length;
+
+    tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length);
+    SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+    
+    // req3: cudaStreamIsCapturing
+    enum cudaStreamCaptureStatus pCaptureStatus;
+    RequestBuffer reqBuf_3 = RequestBuffer(sizeof(cudaStream_t) + sizeof(enum cudaStreamCaptureStatus *));
+    reqBuf_3.Push<int>(CUDA_STREAM_IS_CAPTURING);
+    reqBuf_3.Push64BitPointer(stream);
+    iov[0].length = reqBuf_3.GetSize();
+    iov[0].buffer = reqBuf_3._dataBuffer;
+    tool::Logging(myName, "iov[1].length = %zu\n", iov[0].length);
+    SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+    ucp_dt_iov_t *recv_iov3;
+    PrepareSingleIOV(&recv_iov3, &pCaptureStatus, sizeof(enum cudaStreamCaptureStatus *));
+    size_t tmp3 = 0;
+    // recv pCaptureStatus
+    ReceiveData(recv_iov3, &tmp3, &pCaptureStatus, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    tool::Logging(myName, "pCaptureStatus = %d, size = %zu\n", pCaptureStatus, tmp3);
+
+ 
+    // req4: cudaStreamGetCaptureInfo
+    enum cudaStreamCaptureStatus pCaptureStatusofStream;
+    unsigned long long pId;
+    RequestBuffer reqBuf_4 = RequestBuffer(sizeof(cudaStream_t) + sizeof(enum cudaStreamCaptureStatus *) + sizeof(unsigned long long *));
+    reqBuf_4.Push<int>(CUDA_STREAM_GET_CAPTURE_INFO);
+    reqBuf_4.Push64BitPointer(stream);
+
+    iov[0].length = reqBuf_4.GetSize();
+    iov[0].buffer = reqBuf_4._dataBuffer;
+
+    tool::Logging(myName, "iov[2].length = %zu\n", iov[0].length);
+    SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+    // ucp_dt_iov_t *recv_iov4;
+    // // recv pCaptureStatus
+    // PrepareSingleIOV(&recv_iov4, &pCaptureStatusofStream, sizeof(enum cudaStreamCaptureStatus*));
+    // size_t tmp4 = 0;
+    // ReceiveData(recv_iov4, &tmp4, &pCaptureStatusofStream, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    // tool::Logging(myName, "pCaptureStatusofStream = %d, size = %zu\n", pCaptureStatusofStream, tmp4);
+    // recv pId
+
+    reqBuf_4.Reset(sizeof(enum cudaStreamCaptureStatus*)+sizeof(unsigned long long *), reqBuf_4._dataBuffer);
+
+    ucp_dt_iov_t *recv_iov5;
+    PrepareSingleIOV(&recv_iov5, reqBuf_4._dataBuffer, sizeof(enum cudaStreamCaptureStatus*)+sizeof(unsigned long long *));
+    size_t tmp5 = 0;
+    ReceiveData(recv_iov5, &tmp5, reqBuf_4._dataBuffer, 0, &clientEp->_dataWorker, UCS_MEMORY_TYPE_HOST, NULL);
+    pCaptureStatus = reqBuf_4.Pop<enum cudaStreamCaptureStatus>();
+    pId = reqBuf_4.Pop<unsigned long long>();
+    printf("cudaStreamGetCaptureInfo success, status = %d, pId = %lld\n", pCaptureStatus, pId);
+    
+
+
+    // req5: cudaStreamDestroy
+    RequestBuffer reqBuf_5 = RequestBuffer(sizeof(cudaStream_t));
+    reqBuf_5.Push<int>(CUDA_STREAM_DESTROY);
+    reqBuf_5.Push64BitPointer(stream);    
+    iov[0].length = reqBuf_5.GetSize();
+    iov[0].buffer = reqBuf_5._dataBuffer;
+    tool::Logging(myName, "iov[0].length = %zu\n", iov[0].length);
+    SendData(iov, reqNum, header, sizeof(size_t) * reqNum, amID, &clientEp->_dataWorker, &clientEp->_clientEp);
+
+    // end 
+
+    //free(iov);
+
+    //sleep(5);
+
+    cleanup();
+    
+    return 0;
+}
+
