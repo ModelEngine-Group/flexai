@@ -1,0 +1,25 @@
+set(CUDA_ROOT_PATH "/usr/local/cuda")
+
+if(NOT CUDA_ROOT_PATH)
+    message(FATAL_ERROR "Please set the CUDA_PATH environment variable to the path of your desired CUDA installation.")
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH ${CUDA_ROOT_PATH})
+find_package(CUDA REQUIRED)
+list(APPEND CUDA_NVCC_FLAGS "-lcudart")
+
+set(CUDA_USE_STATIC_CUDA_RUNTIME OFF)
+
+aux_source_directory(. CLIENT_SRC)
+cuda_add_library(ClientCore ${CLIENT_SRC})
+target_link_libraries(ClientCore 
+    CommCore 
+    ${CUDA_LIBRARIES}
+    ${CUDA_TOOLKIT_ROOT_DIR}/lib64/stubs/libcuda.so
+    ${CUDA_TOOLKIT_ROOT_DIR}/lib64/libcufile.so
+)
+
+target_include_directories(ClientCore PUBLIC ${CUDA_INCLUDE_DIRS})
+
+add_executable(Client clientApp.cc)
+target_link_libraries(Client ${CLIENT_FINAL_OBJ})
