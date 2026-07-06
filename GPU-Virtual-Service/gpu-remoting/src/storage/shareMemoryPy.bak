@@ -1,0 +1,89 @@
+import traceback
+import numpy as np
+import mmap
+import os
+import posix_ipc
+import pdb
+
+shared_memory_size = 4096 * 4096 * 4096
+shared_memory_model = "shm_model"
+shared_memory_data = "shm_data"
+import mmap
+import numpy as np
+import posix_ipc
+import multiprocessing
+
+
+class SharedMemoryObj:
+    def __init__(self, name, size):
+        try:
+            self.shm = posix_ipc.SharedMemory(name=name, flags=posix_ipc.O_CREAT, size=size)
+        except posix_ipc.ExistentialError:
+            self.shm = posix_ipc.SharedMemory(name=name)
+        
+        # 将共享内存映射到当前进程的地址空间
+        self.mapped_memory = mmap.mmap(self.shm.fd, self.shm.size)
+        # 创建锁
+        self.lock = multiprocessing.Lock()
+
+    def overwrite(self, batch):
+        if not isinstance(batch, np.ndarray):
+            raise ValueError("Input must be a NumPy array")
+
+        with self.lock:
+            self.mapped_memory.seek(0)
+            bytes_batch = batch.tobytes()
+            self.mapped_memory.write(bytes_batch)
+            self.mapped_memory.flush()
+            print("Data overwritten to shared memory.")
+
+    def append(self, batch):
+        if not isinstance(batch, np.ndarray):
+            raise ValueError("Input must be a NumPy array")
+
+        with self.lock:
+            # 获取当前文件指针位置
+            current_position = self.mapped_memory.tell()
+            # 将文件指针移到当前位置
+            self.mapped_memory.seek(current_position)
+            bytes_batch = batch.tobytes()
+            self.mapped_memory.write(bytes_batch)
+            self.mapped_memory.flush()
+            print("Data appended to shared memory.")
+
+    def read(self, size, offset):
+        with self.lock:
+            self.mapped_memory.seek(offset)
+            return self.mapped_memory.read(size)
+        
+    def close(self):
+        """
+        Unlink and close the shared memory.
+        """
+        try:
+            # Unlink the shared memory
+            self.shm.unlink()
+            # Close the mapped memory
+            self.mapped_memory.close()
+        except Exception as e:
+            print(f"Error: {e}")
+
+
+
+import numpy as np
+import time
+
+def write_data_to_shared_memory():
+    shared_memory = SharedMemoryObj(name='/example_shared_memory', size=1024)
+
+    try:
+        for i in range(5):
+            data_to_write = np.array([i, i + 1, i + 2], dtype=np.int32)
+            shared_memory.append(data_to_write)
+            time.sleep(2)  # Simulate other operations
+
+    finally:
+        shared_memory.close()
+
+# if __name__ == "__main__":
+#     write_data_to_shared_memory()
