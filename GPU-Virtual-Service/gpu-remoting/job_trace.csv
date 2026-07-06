@@ -1,0 +1,11 @@
+job,length,priority
+resnet50,small,high
+shufflenet,medium,low
+mobilenet,small,low
+BERT,medium,high
+shufflenet,small,high
+mobilenet,large,high
+BERT,small,low
+resnet50,medium,low
+mobilenet,small,high
+BERT,large,low

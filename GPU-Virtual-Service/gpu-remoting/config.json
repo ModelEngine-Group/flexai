@@ -1,0 +1,48 @@
+{   
+    "GlobalConfig":{
+        "glbIp_":"10.26.42.231",
+        "glbPort_": 12348
+    },
+    "RequestConfig":{
+        "domain_id_":"domain0",
+        "ReqIp_":"10.26.42.231",
+        "ReqPort_": 12349,
+        "localIp_":"192.168.0.208",
+        "enable_batching_":true
+    },
+    "MonitorConfig": {
+        "monitorIp_": "10.26.42.231",
+        "monitorPort_": 12347
+    },
+    "DispatcherConfig": {
+        "dpcIp_": "192.168.0.208",
+        "dpcPort_": 12345
+    },
+    "ServerConfig": {
+        "serverIp_": "192.168.0.208",
+        "serverPort_": 18708,
+        "serverGPU_": 2
+    }, 
+    "ClientConfig": {
+        "clientID_": 1633,
+        "requestGPUnum_": 1,
+        "priority_": 0,
+        "proxyIp_": "192.168.0.208",
+        "proxyPort_": 18712
+    },
+    "DatasetHandlerConfig": {
+        "handlerIp_": "192.168.0.208",
+        "handlerPort_": 18709
+    },
+    "RedisConfig":{
+        "host": "10.26.42.231",
+        "port": 6379,
+        "db": 4,
+        "jobdb": 6,
+        "password":"password"
+    },
+    "DispatcherMethod":{
+        "comment":"说明:采用轮询调度method选1,free_memory选2,util选3,同时使用util和free_memory选4",
+        "method": 1
+    }
+}
