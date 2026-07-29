@@ -1,24 +1,15 @@
 import socket
 import threading
 import json
-import redis
 from ctypes import Structure, c_char, c_int, c_size_t, sizeof
 from cffi import FFI
 import struct
 import logging
 
+from runtime_config import create_redis_connection, load_runtime_config
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
-def create_redis_connection(redis_config):
-    
-    r = redis.Redis(
-        host=redis_config['RedisConfig']['host'],
-        port=redis_config['RedisConfig']['port'],
-        db=redis_config['RedisConfig']['db'],
-        password=redis_config['RedisConfig']['password']
-    )
-    return r
 
 def sort_gpu_info(gpu_Info_properties,conf):
     if conf == 1:
@@ -37,9 +28,8 @@ def sort_gpu_info(gpu_Info_properties,conf):
 
 
 def find_available_gpus(gpuInfoProperties, cnt):
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-    r = create_redis_connection(config)
+    config = load_runtime_config()
+    r = create_redis_connection()
     avail_gpus = list()
     avail_gpus_properties = list()
     if config['DispatcherMethod']['method'] == 1:
@@ -131,8 +121,7 @@ def find_available_gpus(gpuInfoProperties, cnt):
 
 def handle_message(conn, addr, message, gpuInfoProperties):
     if message.startswith("TypeA:"):
-        with open('config.json', 'r') as f:
-            config = json.load(f)
+        config = load_runtime_config()
         if config['DispatcherMethod']['method'] != 1:
             gpuInfoProperties =  handle_redis()
         logging.info(f"Received message from {addr}: {message}")
@@ -170,8 +159,7 @@ def handle_client(conn, addr, gpuInfo):
 def handle_redis():
     gpu_info_properties = list()
     # gpu_properties = list()
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
     conf = config['DispatcherMethod']['method']
     if conf == 1:#简单轮询调度
         logging.info("RoundRobin scheduling")
@@ -181,7 +169,7 @@ def handle_redis():
         logging.info("Utilization scheduling")
     else:
         logging.info("Free Memory and Utilization scheduling")
-    r = create_redis_connection(config)
+    r = create_redis_connection()
     serv_ip = config['ServerConfig']['serverIp_']
     cursor = 0
     while True:
@@ -195,8 +183,7 @@ def handle_redis():
     return gpu_info_properties
 
 def main():
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
     HOST = config['DispatcherConfig']['dpcIp_']
     PORT = config['DispatcherConfig']['dpcPort_']
 

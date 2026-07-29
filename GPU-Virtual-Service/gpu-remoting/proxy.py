@@ -8,6 +8,8 @@ import numpy as np
 import lz4.frame
 import struct
 
+from runtime_config import load_runtime_config
+
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 clientId2gpuInfos = {}
@@ -215,9 +217,7 @@ def handle_client_worker(conn, addr, proxy, proxy_lock):
                 logging.info(f"Client#{clientID} released all GPU resources")
 
 def main():
-
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
 
     dpcIp = config['DispatcherConfig']['dpcIp_']
     dpcPort = config['DispatcherConfig']['dpcPort_']

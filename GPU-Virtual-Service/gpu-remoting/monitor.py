@@ -1,7 +1,6 @@
 import socket
 import threading
 import json
-import redis
 import pynvml
 import os 
 import numpy as np
@@ -12,21 +11,13 @@ import lz4.frame
 import struct
 import logging
 
+from runtime_config import create_redis_connection, load_runtime_config
+
 # 删除 CUDA_VISIBLE_DEVICES 环境变量
 if 'CUDA_VISIBLE_DEVICES' in os.environ:
     del os.environ['CUDA_VISIBLE_DEVICES']
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
-def create_redis_connection(redis_config):
-    
-    r = redis.Redis(
-        host=redis_config['host'],
-        port=redis_config['port'],
-        db=redis_config['db'],
-        password=redis_config['password']
-    )
-    return r
 
 
 # 加载 CUDA 运行时库
@@ -48,8 +39,7 @@ def get_device_properties_bytes(device_id=0):
 #在初始化的时候调用，初始化redis里的GPU信息
 def get_gpu_info():
     # global r
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
     logging.debug("Get GPU info")
     gpuInfo = list()
     compressed_datas = list()
@@ -60,14 +50,11 @@ def get_gpu_info():
     dev_cnt = pynvml.nvmlDeviceGetCount()
     # torch.cuda.device_count()
     logging.info(f"Total {dev_cnt} GPU(s) found")
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-
     IP_addr = config['ServerConfig']['serverIp_']
     Port = config['ServerConfig']['serverPort_']
 
     logging.debug(f"IP_addr: {IP_addr}, Port: {Port}")
-    r = create_redis_connection(config['RedisConfig'])
+    r = create_redis_connection()
 
     # 打印每个GPU的内存信息和利用率
     for i in range(dev_cnt):
@@ -117,8 +104,7 @@ def get_gpu_info():
 #更新redis中GPU信息
 def update_gpu_info():
     # global r
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
     logging.info("Updating GPU info...")
     gpuInfo = list()
     # 初始化NVML，这对于使用pynvml库是必需的
@@ -130,7 +116,7 @@ def update_gpu_info():
     # IP_addr = '192.168.0.208'
     Ip_addr = config['ServerConfig']['serverIp_']
 
-    r = create_redis_connection(config['RedisConfig'])
+    r = create_redis_connection()
 
     
     # 更新每个GPU的内存信息和利用率
@@ -164,9 +150,8 @@ def update_gpu_info():
 def reduce_gpu_job(data):
     # 解析data字符串，提取GPU ID
     gpu_ids = data.split(':')[1].split(',')
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-    r = create_redis_connection(config['RedisConfig'])
+    config = load_runtime_config()
+    r = create_redis_connection()
  
     Ip_addr = config['ServerConfig']['serverIp_']
     for gpu_id in gpu_ids:
@@ -184,9 +169,8 @@ def reduce_gpu_job(data):
 def handle_new_job(data):
         # 解析data字符串，提取GPU ID
     gpu_ids = data.split(':')[1].split(',')
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-    r = create_redis_connection(config['RedisConfig'])
+    config = load_runtime_config()
+    r = create_redis_connection()
     Ip_addr = config['ServerConfig']['serverIp_']
     for gpu_id in gpu_ids:
         key = f"{Ip_addr}:{gpu_id}"
@@ -202,15 +186,14 @@ def handle_new_job(data):
             logging.info(f"GPU {gpu_id} not found")
 
 def collect_gpu_utilization():
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
     # 初始化pynvml
     pynvml.nvmlInit()
     dev_cnt = pynvml.nvmlDeviceGetCount()
 
     IP_addr = config['ServerConfig']['serverIp_']
     Port = config['ServerConfig']['serverPort_']
-    r = create_redis_connection(config['RedisConfig'])
+    r = create_redis_connection()
 
     # 创建一个字典来存储每个GPU的utilization数据
     gpu_utilizations = {i: [] for i in range(dev_cnt)}
@@ -311,8 +294,7 @@ def schedule_update():
 def main():
     #一开始先初始化redis里的服务器信息，然后启动TCP连接，监听Server请求
     get_gpu_info()
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
 
     HOST = config['MonitorConfig']['monitorIp_']
     PORT = config['MonitorConfig']['monitorPort_']
