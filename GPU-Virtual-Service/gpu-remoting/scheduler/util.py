@@ -16,25 +16,16 @@ import pandas as pd
 from scheduler.gpu_info import *
 from scheduler.job import *
 import pulp
+from runtime_config import create_redis_connection, get_job_info_path, load_runtime_config
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def get_config_file():
-    # 获取当前文件的目录
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    # 获取上一层目录
-    parent_dir = os.path.dirname(current_dir)
-    # 构建 config.json 文件的路径
-    config_path = os.path.join(parent_dir, 'config.json')
-    with open(config_path, 'r') as f:
-        config = json.load(f)
-    
-    return config
+    return load_runtime_config()
 
 def query_job_info(model, batch_size):
-    # 读取 CSV 文件
-    df = pd.read_csv('/home/zss/djh_test/NewVersion15/FlexGV_S/scheduler/job_info.csv')
+    df = pd.read_csv(get_job_info_path())
     
     # 根据 model 和 batch_size 查询
     result = df[(df['model'] == model) & (df['batchsize'] == batch_size)]
@@ -43,26 +34,10 @@ def query_job_info(model, batch_size):
 
 
 def redis_connection():
-    config = get_config_file()
-    # 使用 config 中的配置信息创建 Redis 连接
-    r = redis.Redis(
-        host=config['RedisConfig']['host'],
-        port=config['RedisConfig']['port'],
-        db=config['RedisConfig']['db'],
-        password=config['RedisConfig']['password']
-    )
-    return r
+    return create_redis_connection()
 
 def redis_job_connection():
-    config = get_config_file()
-    # 使用 config 中的配置信息创建 Redis 连接
-    r = redis.Redis(
-        host=config['RedisConfig']['host'],
-        port=config['RedisConfig']['port'],
-        db=config['RedisConfig']['jobdb'],
-        password=config['RedisConfig']['password']
-    )
-    return r   
+    return create_redis_connection(db_key="jobdb")
     
 def allocate_gpus(gpu_free_memory, k, m):
     """
@@ -170,4 +145,3 @@ def optimize_task_preemption(gpus, tasks, m, k):
             })
     
     return result
-

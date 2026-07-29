@@ -10,6 +10,7 @@ import struct
 import time
 from scheduler.msg_queue import *
 
+from runtime_config import load_runtime_config
 
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -321,9 +322,7 @@ def handle_client_worker(conn, addr):
 
 
 def main():
-
-    with open('config.json', 'r') as f:
-        config = json.load(f)
+    config = load_runtime_config()
 
     listenIp = config['ClientConfig']['proxyIp_']
     listenPort = config['ClientConfig']['proxyPort_']
