@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"huawei.com/xpu-exporter/common/cache"
-	"huawei.com/xpu-exporter/common/utils"
+	"flexai.com/xpu-exporter/common/cache"
+	"flexai.com/xpu-exporter/common/utils"
 )
 
 const (

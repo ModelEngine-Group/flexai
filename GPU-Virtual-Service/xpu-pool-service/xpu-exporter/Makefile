@@ -17,8 +17,8 @@ xpu-exporter:
 	go build \
 		-buildmode=pie \
 		-ldflags="-s -w -linkmode 'external' -extldflags '$(EXTLDFLAGS)' \
-		-X huawei.com/npu-exporter/v6/versions.BuildName=${OUTPUT_NAME} \
-		-X huawei.com/xpu-exporter/versions.BuildVersion=${build_version}" \
+		-X flexai.com/npu-exporter/v6/versions.BuildName=${OUTPUT_NAME} \
+		-X flexai.com/xpu-exporter/versions.BuildVersion=${build_version}" \
 		-o xpu-exporter \
 		./cmd/xpu-exporter
 

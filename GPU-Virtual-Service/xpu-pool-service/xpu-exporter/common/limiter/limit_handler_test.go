@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/agiledragon/gomonkey/v2"
-	"huawei.com/xpu-exporter/common"
+	"flexai.com/xpu-exporter/common"
 )
 
 const (

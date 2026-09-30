@@ -18,8 +18,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"huawei.com/xpu-exporter/collector"
-	"huawei.com/xpu-exporter/common/limiter"
+	"flexai.com/xpu-exporter/collector"
+	"flexai.com/xpu-exporter/common/limiter"
 )
 
 type ProtocolType int

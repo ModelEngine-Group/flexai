@@ -12,8 +12,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"huawei.com/vxpu-device-plugin/pkg/api/runtime/service"
-	"huawei.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/api/runtime/service"
+	"flexai.com/vxpu-device-plugin/pkg/log"
 )
 
 const (

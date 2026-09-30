@@ -3,9 +3,9 @@ package types
 
 const (
 	// DeviceBindTime allocate bind time
-	DeviceBindTime = "huawei.com/bind-time"
+	DeviceBindTime = "flexai.com/bind-time"
 	// DeviceBindPhase allocate bind phase
-	DeviceBindPhase = "huawei.com/bind-phase"
+	DeviceBindPhase = "flexai.com/bind-phase"
 
 	// DeviceBindAllocating bind phase allocating
 	DeviceBindAllocating = "allocating"

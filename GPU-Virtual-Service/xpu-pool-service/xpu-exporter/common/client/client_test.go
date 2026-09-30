@@ -8,7 +8,7 @@ import (
 
 	"github.com/agiledragon/gomonkey/v2"
 	"google.golang.org/grpc"
-	"huawei.com/xpu-exporter/common/service"
+	"flexai.com/xpu-exporter/common/service"
 )
 
 type mockClient struct {

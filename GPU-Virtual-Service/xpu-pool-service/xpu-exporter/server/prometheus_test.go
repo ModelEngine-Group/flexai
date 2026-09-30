@@ -13,7 +13,7 @@ import (
 	"github.com/agiledragon/gomonkey/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/assert"
-	"huawei.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/log"
 )
 
 type mockCollectorService struct{}

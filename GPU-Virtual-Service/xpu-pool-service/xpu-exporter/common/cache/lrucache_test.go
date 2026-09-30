@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"huawei.com/xpu-exporter/common"
+	"flexai.com/xpu-exporter/common"
 )
 
 const (

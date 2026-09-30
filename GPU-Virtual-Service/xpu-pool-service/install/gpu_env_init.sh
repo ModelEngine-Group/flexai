@@ -28,4 +28,4 @@ else
     exit 1
 fi
 
-kubectl label node ${host_name} huawei.com/vgpu=ready
+kubectl label node ${host_name} flexai.com/vgpu=ready

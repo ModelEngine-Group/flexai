@@ -17,20 +17,20 @@ import (
 
 	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
-	"huawei.com/vxpu-device-plugin/pkg/gonvml"
-	"huawei.com/vxpu-device-plugin/pkg/graph"
-	"huawei.com/vxpu-device-plugin/pkg/log"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/config"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/types"
+	"flexai.com/vxpu-device-plugin/pkg/gonvml"
+	"flexai.com/vxpu-device-plugin/pkg/graph"
+	"flexai.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/config"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/types"
 )
 
 const (
 	// VxpuNumber vxpu number resource name
-	VxpuNumber = "huawei.com/vgpu-number"
+	VxpuNumber = "flexai.com/vgpu-number"
 	// VxpuCore vxpu core resource name
-	VxpuCore = "huawei.com/vgpu-cores"
+	VxpuCore = "flexai.com/vgpu-cores"
 	// VxpuMemory vxpu memory resource name
-	VxpuMemory                      = "huawei.com/vgpu-memory.1Gi"
+	VxpuMemory                      = "flexai.com/vgpu-memory.1Gi"
 	microSecond                     = 1000 * 1000
 	milliwatts                      = 1000
 	eventWaitTimeout                = 5000
@@ -45,15 +45,15 @@ const (
 	VxpuIdsConfigFileName = "vgpu-ids.config"
 	// DeviceAssign device type supported by the device plugin
 	DeviceType            = "GPU"
-	AssignedIDs           = "huawei.com/vgpu-ids-new"
-	AssignedIDsToAllocate = "huawei.com/vgpu-devices-to-allocate"
-	NodeVXPUHandshake     = "huawei.com/node-vgpu-handshake"
-	NodeVXPURegister      = "huawei.com/node-vgpu-register"
-	NodeVXPUUsed          = "huawei.com/node-vgpu-used"
+	AssignedIDs           = "flexai.com/vgpu-ids-new"
+	AssignedIDsToAllocate = "flexai.com/vgpu-devices-to-allocate"
+	NodeVXPUHandshake     = "flexai.com/node-vgpu-handshake"
+	NodeVXPURegister      = "flexai.com/node-vgpu-register"
+	NodeVXPUUsed          = "flexai.com/node-vgpu-used"
 	// AssignedNode assigned node name
-	AssignedNode = "huawei.com/vgpu-node"
+	AssignedNode = "flexai.com/vgpu-node"
 	// NodeXpuTopology node gpu topology
-	NodeXpuTopology = "huawei.com/node-gpu-topology"
+	NodeXpuTopology = "flexai.com/node-gpu-topology"
 )
 
 var (

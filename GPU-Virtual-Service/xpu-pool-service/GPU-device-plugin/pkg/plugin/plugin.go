@@ -15,12 +15,12 @@ import (
 	"google.golang.org/grpc"
 	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
-	"huawei.com/vxpu-device-plugin/pkg/lock"
-	"huawei.com/vxpu-device-plugin/pkg/log"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/config"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/types"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/util"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/xpu"
+	"flexai.com/vxpu-device-plugin/pkg/lock"
+	"flexai.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/config"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/types"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/util"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/xpu"
 )
 
 const (

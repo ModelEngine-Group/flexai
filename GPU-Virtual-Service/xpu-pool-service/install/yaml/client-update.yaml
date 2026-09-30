@@ -18,7 +18,7 @@ spec:
         name: client-update
     spec:
       nodeSelector:
-        huawei.com/vgpu: ready
+        flexai.com/vgpu: ready
       priorityClassName: "system-node-critical"
       hostPID: true
       hostNetwork: true

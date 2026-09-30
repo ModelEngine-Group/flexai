@@ -14,11 +14,11 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"huawei.com/vxpu-device-plugin/pkg/log"
-	"huawei.com/xpu-exporter/collector/gpuservice"
-	"huawei.com/xpu-exporter/collector/npuservice"
-	"huawei.com/xpu-exporter/server"
-	"huawei.com/xpu-exporter/versions"
+	"flexai.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/xpu-exporter/collector/gpuservice"
+	"flexai.com/xpu-exporter/collector/npuservice"
+	"flexai.com/xpu-exporter/server"
+	"flexai.com/xpu-exporter/versions"
 )
 
 var (

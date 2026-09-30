@@ -13,12 +13,12 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
-	"huawei.com/vxpu-device-plugin/pkg/api/runtime/service"
-	"huawei.com/vxpu-device-plugin/pkg/log"
-	"huawei.com/vxpu-device-plugin/pkg/plugin"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/config"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/xpu"
-	"huawei.com/vxpu-device-plugin/watchers"
+	"flexai.com/vxpu-device-plugin/pkg/api/runtime/service"
+	"flexai.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/plugin"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/config"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/xpu"
+	"flexai.com/vxpu-device-plugin/watchers"
 )
 
 const (
@@ -139,7 +139,7 @@ func main() {
 	flag.StringVar(&config.NodeName, "node-name", os.Getenv("NODE_NAME"), "node name")
 	// 日志目录：日志文件的存储目录
 	flag.StringVar(&config.LogDir, "log-dir", defaultLogDir, "log storage directory")
-	// 资源名称：Kubernetes 中的资源名称，用于向 kubelet 注册（如 "huawei.com/gpu"）
+	// 资源名称：Kubernetes 中的资源名称，用于向 kubelet 注册（如 "flexai.com/gpu"）
 	flag.StringVar(&resourceName, "resource-name", xpu.VxpuNumber, "resource name")
 	// GPU 类型配置文件：GPU 类型配置文件的绝对路径
 	flag.StringVar(&config.GPUTypeConfig, "gpu-type-config", "", "the abs path map of gpu type config file")

@@ -7,10 +7,10 @@ basic:
 
 gpu:
   nodeSelector:
-    huawei.com/vgpu: ready
+    flexai.com/vgpu: ready
 npu:
   nodeSelector:
-    huawei.com/vnpu: ready    
+    flexai.com/vnpu: ready    
 
 gpuDevicePlugin:
   name: gpu-device-plugin

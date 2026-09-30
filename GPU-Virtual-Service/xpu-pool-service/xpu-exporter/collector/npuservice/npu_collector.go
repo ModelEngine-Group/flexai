@@ -6,8 +6,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"huawei.com/xpu-exporter/common/cache"
-	"huawei.com/xpu-exporter/versions"
+	"flexai.com/xpu-exporter/common/cache"
+	"flexai.com/xpu-exporter/versions"
 )
 
 var (

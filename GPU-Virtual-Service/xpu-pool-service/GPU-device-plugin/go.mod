@@ -1,4 +1,4 @@
-module huawei.com/vxpu-device-plugin
+module flexai.com/vxpu-device-plugin
 
 go 1.22.1
 

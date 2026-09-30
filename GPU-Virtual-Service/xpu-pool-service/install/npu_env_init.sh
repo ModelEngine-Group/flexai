@@ -5,4 +5,4 @@
 set -e
 
 host_name=$(hostname)
-kubectl label node ${host_name} huawei.com/vnpu=ready
+kubectl label node ${host_name} flexai.com/vnpu=ready
