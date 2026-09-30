@@ -1,5 +1,6 @@
 #!/bin/bash
-# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+# Copyright (c) 2025 Shanghai Jiao Tong University.
+# Contributed to the ModelEngine Community.
 
 set -e 
 
