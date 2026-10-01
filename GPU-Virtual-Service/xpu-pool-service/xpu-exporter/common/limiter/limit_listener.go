@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"huawei.com/xpu-exporter/common/cache"
+	"flexai.com/xpu-exporter/common/cache"
 )
 
 const (

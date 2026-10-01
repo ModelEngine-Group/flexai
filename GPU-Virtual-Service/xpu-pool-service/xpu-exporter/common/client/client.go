@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-	"huawei.com/xpu-exporter/common/service"
+	"flexai.com/xpu-exporter/common/service"
 )
 
 const (

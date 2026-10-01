@@ -1,5 +1,6 @@
 #!/bin/bash
-# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+# Copyright (c) 2025 Shanghai Jiao Tong University.
+# Contributed to the ModelEngine Community.
 
 set -e
 
@@ -27,4 +28,4 @@ else
     exit 1
 fi
 
-kubectl label node ${host_name} huawei.com/vgpu=ready
+kubectl label node ${host_name} flexai.com/vgpu=ready

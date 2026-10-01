@@ -6,7 +6,7 @@ import (
 
 	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
-	"huawei.com/vxpu-device-plugin/pkg/plugin/xpu"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/xpu"
 )
 
 // DeviceCache provide xpu device cache for plugin and register

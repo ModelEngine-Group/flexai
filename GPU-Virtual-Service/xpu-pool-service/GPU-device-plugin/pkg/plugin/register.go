@@ -9,12 +9,12 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"huawei.com/vxpu-device-plugin/pkg/graph"
-	"huawei.com/vxpu-device-plugin/pkg/log"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/config"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/types"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/util"
-	"huawei.com/vxpu-device-plugin/pkg/plugin/xpu"
+	"flexai.com/vxpu-device-plugin/pkg/graph"
+	"flexai.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/config"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/types"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/util"
+	"flexai.com/vxpu-device-plugin/pkg/plugin/xpu"
 )
 
 const (

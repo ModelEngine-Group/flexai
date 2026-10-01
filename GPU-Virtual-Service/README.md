@@ -239,13 +239,13 @@ spec:
             - containerPort: 8000
           resources:
             requests: # vgpu资源配置
-              huawei.com/vgpu-number: 1
-              huawei.com/vgpu-cores: 20
-              huawei.com/vgpu-memory.1Gi: 3
+              flexai.com/vgpu-number: 1
+              flexai.com/vgpu-cores: 20
+              flexai.com/vgpu-memory.1Gi: 3
             limits:
-              huawei.com/vgpu-number: 1
-              huawei.com/vgpu-cores: 20
-              huawei.com/vgpu-memory.1Gi: 3
+              flexai.com/vgpu-number: 1
+              flexai.com/vgpu-cores: 20
+              flexai.com/vgpu-memory.1Gi: 3
           volumeMounts:
             - name: local-models
               mountPath: {path/to/DeepSeek-R1-Distill-llama-8B-main}  # 填写模型权重路径

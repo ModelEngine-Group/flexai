@@ -1,4 +1,5 @@
-# Copyright (C) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+# Copyright (c) 2025 Shanghai Jiao Tong University.
+# Contributed to the ModelEngine Community.
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -77,7 +78,7 @@ spec:
           name: gpu-device-plugin
       spec:
         nodeSelector:
-          huawei.com/vgpu: ready
+          flexai.com/vgpu: ready
         # Mark this pod as a critical add-on; when enabled, the critical add-on
         # scheduler reserves resources for critical add-on pods so that they can be scheduled after a failure.
         # See https://kubernetes.io/docs/tasks/administer-cluster/guraranteed-scheduling-critical-addon-pods/

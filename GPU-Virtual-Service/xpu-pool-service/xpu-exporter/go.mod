@@ -1,10 +1,10 @@
-module huawei.com/xpu-exporter
+module flexai.com/xpu-exporter
 
 go 1.22.1
 
 replace (
 	google.golang.org/grpc => google.golang.org/grpc v1.57.2
-	huawei.com/vxpu-device-plugin => ../GPU-device-plugin
+	flexai.com/vxpu-device-plugin => ../GPU-device-plugin
 )
 
 require (
@@ -13,7 +13,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
-	huawei.com/vxpu-device-plugin v0.0.0-00010101000000-000000000000
+	flexai.com/vxpu-device-plugin v0.0.0-00010101000000-000000000000
 )
 
 require (

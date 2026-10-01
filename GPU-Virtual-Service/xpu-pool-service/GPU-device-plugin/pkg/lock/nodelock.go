@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"huawei.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/log"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"

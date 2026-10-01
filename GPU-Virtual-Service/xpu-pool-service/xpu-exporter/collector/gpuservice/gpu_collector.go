@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"huawei.com/vxpu-device-plugin/pkg/log"
+	"flexai.com/vxpu-device-plugin/pkg/log"
 
-	"huawei.com/xpu-exporter/common/cache"
-	"huawei.com/xpu-exporter/common/client"
-	"huawei.com/xpu-exporter/common/utils"
-	"huawei.com/xpu-exporter/versions"
+	"flexai.com/xpu-exporter/common/cache"
+	"flexai.com/xpu-exporter/common/client"
+	"flexai.com/xpu-exporter/common/utils"
+	"flexai.com/xpu-exporter/versions"
 )
 
 const (

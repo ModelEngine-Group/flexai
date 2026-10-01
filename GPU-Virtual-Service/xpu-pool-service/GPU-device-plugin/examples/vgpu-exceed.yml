@@ -10,6 +10,6 @@ spec:
     command: ["bash", "-c", "sleep 86400"]
     resources:
       limits:
-        huawei.com/vgpu-number: 1 # requesting 1 vGPU
-        huawei.com/vgpu-memory.1Gi: 6
-        # huawei.com/vgpu-cores: 80
+        flexai.com/vgpu-number: 1 # requesting 1 vGPU
+        flexai.com/vgpu-memory.1Gi: 6
+        # flexai.com/vgpu-cores: 80

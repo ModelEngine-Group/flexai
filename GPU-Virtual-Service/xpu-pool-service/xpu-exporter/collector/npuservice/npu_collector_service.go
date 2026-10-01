@@ -7,8 +7,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"huawei.com/xpu-exporter/collector"
-	"huawei.com/xpu-exporter/common/cache"
+	"flexai.com/xpu-exporter/collector"
+	"flexai.com/xpu-exporter/common/cache"
 )
 
 const (
